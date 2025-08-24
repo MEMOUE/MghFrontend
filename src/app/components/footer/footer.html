@@ -1,0 +1,134 @@
+<footer class="main-footer">
+  <div class="footer-container">
+
+    <!-- Section principale du footer -->
+    <div class="footer-main">
+
+      <!-- Section À propos -->
+      <div class="footer-section about-section">
+        <div class="footer-logo">
+          <img src="/logo.png" alt="HotelPro Logo" class="footer-logo-img" />
+          <h3>HotelPro Manager</h3>
+        </div>
+        <p class="footer-description">
+          Solution SaaS complète pour la gestion hôtelière.
+          Optimisez vos opérations, augmentez vos revenus et offrez une expérience exceptionnelle à vos clients.
+        </p>
+        <div class="version-info">
+          <span class="version">{{ version() }}</span>
+          <small class="last-update">{{ lastUpdate() }}</small>
+        </div>
+      </div>
+
+      <!-- Section Liens rapides -->
+      <div class="footer-section links-section">
+        <h4>Liens Rapides</h4>
+        <div class="quick-links">
+          <button
+            *ngFor="let link of quickLinks()"
+            class="footer-link-btn"
+            (click)="link.action()"
+            [pTooltip]="link.label"
+            tooltipPosition="top"
+          >
+            <i [class]="link.icon"></i>
+            <span>{{ link.label }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Section Contact et Support -->
+      <div class="footer-section contact-section">
+        <h4>Support & Contact</h4>
+        <div class="contact-info">
+          <div class="contact-item">
+            <i class="pi pi-phone contact-icon"></i>
+            <div class="contact-details">
+              <strong>Support 24/7</strong>
+              <span>+33 1 23 45 67 89</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="pi pi-envelope contact-icon"></i>
+            <div class="contact-details">
+              <strong>Email Support</strong>
+              <span>support&#64;hotelpro.com</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <i class="pi pi-globe contact-icon"></i>
+            <div class="contact-details">
+              <strong>Centre d'aide</strong>
+              <span>help.hotelpro.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Réseaux sociaux -->
+      <div class="footer-section social-section">
+        <h4>Suivez-nous</h4>
+        <div class="social-links">
+          <button
+            *ngFor="let social of socialLinks()"
+            class="social-btn"
+            (click)="openSocialLink(social.url)"
+            [pTooltip]="social.tooltip"
+            tooltipPosition="top"
+          >
+            <i [class]="social.icon"></i>
+          </button>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="newsletter">
+          <h5>Newsletter</h5>
+          <p>Restez informé des dernières nouveautés</p>
+          <div class="newsletter-form">
+            <input
+              type="email"
+              placeholder="Votre email"
+              class="newsletter-input"
+            />
+            <button class="newsletter-btn">
+              <i class="pi pi-send"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p-divider></p-divider>
+
+    <!-- Section copyright et liens légaux -->
+    <div class="footer-bottom">
+      <div class="footer-copyright">
+        <span>&copy; {{ currentYear() }} HotelPro Manager. Tous droits réservés.</span>
+        <span class="company-info">Développé avec ❤️ pour l'industrie hôtelière</span>
+      </div>
+
+      <div class="footer-legal">
+        <button
+          *ngFor="let link of legalLinks(); let last = last"
+          class="legal-link"
+          (click)="link.action()"
+        >
+          {{ link.label }}
+          <span *ngIf="!last" class="separator">|</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Bande de statut système -->
+    <div class="system-status">
+      <div class="status-indicator">
+        <i class="pi pi-circle-fill status-icon online"></i>
+        <span>Tous les services opérationnels</span>
+      </div>
+      <div class="server-info">
+        <i class="pi pi-server"></i>
+        <span>Serveur EU-West-1 • Latence: 12ms</span>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,122 @@
+<header class="main-header">
+  <div class="header-container">
+    <!-- Logo et nom de l'hôtel -->
+    <div class="logo-section">
+      <img src="logo.png" alt="Logo Hotel" class="hotel-logo" />
+      <div class="hotel-info">
+        <h2 class="hotel-name">{{ hotelName() }}</h2>
+        <span class="system-name">HotelPro Manager</span>
+      </div>
+    </div>
+
+    <!-- Navigation principale -->
+    <div class="navigation-section">
+      <p-menubar [model]="menuItems" styleClass="main-menubar">
+        <ng-template pTemplate="start">
+          <i class="pi pi-bars menu-icon"></i>
+        </ng-template>
+      </p-menubar>
+    </div>
+
+    <!-- Section utilisateur et notifications -->
+    <div class="user-section">
+      <!-- Barre de recherche rapide -->
+      <div class="search-container">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            type="text"
+            pInputText
+            placeholder="Rechercher..."
+            class="quick-search"
+          />
+        </span>
+      </div>
+
+      <!-- Notifications avec dropdown CSS -->
+      <div class="notification-container">
+        <p-button
+          icon="pi pi-bell"
+          [badge]="notificationCount().toString()"
+          badgeClass="p-badge-danger"
+          styleClass="p-button-text notification-button"
+          (onClick)="toggleNotificationDropdown()"
+        ></p-button>
+
+        <!-- Dropdown de notifications (CSS pur) -->
+        <div class="notification-dropdown" *ngIf="notificationDropdownVisible">
+          <div class="notification-header">
+            <h4>Notifications</h4>
+            <p-button
+              label="Tout marquer lu"
+              styleClass="p-button-text p-button-sm"
+              (onClick)="clearAllNotifications()"
+            ></p-button>
+          </div>
+
+          <p-divider></p-divider>
+
+          <div class="notification-list" *ngIf="notifications().length > 0; else noNotifications">
+            <div
+              *ngFor="let notification of notifications()"
+              class="notification-item"
+              [class.unread]="!notification.read"
+              (click)="markAsRead(notification.id)"
+            >
+              <div class="notification-content">
+                <h5>{{ notification.title }}</h5>
+                <p>{{ notification.message }}</p>
+                <small class="notification-time">{{ notification.time }}</small>
+              </div>
+              <i class="pi pi-circle-fill read-indicator" *ngIf="!notification.read"></i>
+            </div>
+          </div>
+
+          <ng-template #noNotifications>
+            <div class="no-notifications">
+              <i class="pi pi-bell-slash"></i>
+              <p>Aucune nouvelle notification</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Menu utilisateur -->
+      <div class="user-menu-container">
+        <div class="user-info" (click)="toggleUserDropdown()">
+          <p-avatar
+            label="{{ userName().charAt(0) }}"
+            styleClass="user-avatar"
+            size="normal"
+          ></p-avatar>
+          <div class="user-details">
+            <span class="user-name">{{ userName() }}</span>
+            <small class="user-role">{{ userRole() }}</small>
+          </div>
+          <i class="pi pi-chevron-down user-dropdown-icon"
+             [class.rotated]="userDropdownVisible"></i>
+        </div>
+
+         Dropdown utilisateur (CSS pur)
+        <div class="user-dropdown" *ngIf="userDropdownVisible">
+          <div
+            *ngFor="let item of userMenuItems"
+            class="user-menu-item"
+            [class.separator]="item.separator"
+          >
+            <ng-container *ngIf="!item.separator">
+              <i [class]="item.icon" *ngIf="item.icon"></i>
+              <span>{{ item.label }}</span>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overlay pour fermer les dropdowns -->
+    <div class="dropdown-overlay"
+         *ngIf="notificationDropdownVisible || userDropdownVisible"
+         (click)="notificationDropdownVisible = false; userDropdownVisible = false">
+    </div>
+  </div>
+</header>
