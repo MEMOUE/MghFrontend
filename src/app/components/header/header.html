@@ -1,122 +1,165 @@
-<header class="main-header">
-  <div class="header-container">
-    <!-- Logo et nom de l'hôtel -->
-    <div class="logo-section">
-      <img src="logo.png" alt="Logo Hotel" class="hotel-logo" />
-      <div class="hotel-info">
-        <h2 class="hotel-name">{{ hotelName() }}</h2>
-        <span class="system-name">HotelPro Manager</span>
-      </div>
-    </div>
+<header class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md transition-colors duration-300">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 items-center justify-between">
 
-    <!-- Navigation principale -->
-    <div class="navigation-section">
-      <p-menubar [model]="menuItems" styleClass="main-menubar">
-        <ng-template pTemplate="start">
-          <i class="pi pi-bars menu-icon"></i>
-        </ng-template>
-      </p-menubar>
-    </div>
-
-    <!-- Section utilisateur et notifications -->
-    <div class="user-section">
-      <!-- Barre de recherche rapide -->
-      <div class="search-container">
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input
-            type="text"
-            pInputText
-            placeholder="Rechercher..."
-            class="quick-search"
-          />
-        </span>
-      </div>
-
-      <!-- Notifications avec dropdown CSS -->
-      <div class="notification-container">
-        <p-button
-          icon="pi pi-bell"
-          [badge]="notificationCount().toString()"
-          badgeClass="p-badge-danger"
-          styleClass="p-button-text notification-button"
-          (onClick)="toggleNotificationDropdown()"
-        ></p-button>
-
-        <!-- Dropdown de notifications (CSS pur) -->
-        <div class="notification-dropdown" *ngIf="notificationDropdownVisible">
-          <div class="notification-header">
-            <h4>Notifications</h4>
-            <p-button
-              label="Tout marquer lu"
-              styleClass="p-button-text p-button-sm"
-              (onClick)="clearAllNotifications()"
-            ></p-button>
-          </div>
-
-          <p-divider></p-divider>
-
-          <div class="notification-list" *ngIf="notifications().length > 0; else noNotifications">
-            <div
-              *ngFor="let notification of notifications()"
-              class="notification-item"
-              [class.unread]="!notification.read"
-              (click)="markAsRead(notification.id)"
-            >
-              <div class="notification-content">
-                <h5>{{ notification.title }}</h5>
-                <p>{{ notification.message }}</p>
-                <small class="notification-time">{{ notification.time }}</small>
-              </div>
-              <i class="pi pi-circle-fill read-indicator" *ngIf="!notification.read"></i>
+      <!-- Logo Section -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 cursor-pointer group">
+          <div class="relative">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+              <i class="pi pi-building text-white text-xl"></i>
             </div>
+            <div class="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900 animate-pulse"></div>
           </div>
-
-          <ng-template #noNotifications>
-            <div class="no-notifications">
-              <i class="pi pi-bell-slash"></i>
-              <p>Aucune nouvelle notification</p>
-            </div>
-          </ng-template>
+          <div class="flex flex-col">
+            <span class="text-lg font-bold text-gray-900 dark:text-white">{{ hotelName() }}</span>
+            <span class="text-xs text-gray-500 dark:text-gray-400">Hotel Management</span>
+          </div>
         </div>
       </div>
 
-      <!-- Menu utilisateur -->
-      <div class="user-menu-container">
-        <div class="user-info" (click)="toggleUserDropdown()">
-          <p-avatar
-            label="{{ userName().charAt(0) }}"
-            styleClass="user-avatar"
-            size="normal"
-          ></p-avatar>
-          <div class="user-details">
-            <span class="user-name">{{ userName() }}</span>
-            <small class="user-role">{{ userRole() }}</small>
-          </div>
-          <i class="pi pi-chevron-down user-dropdown-icon"
-             [class.rotated]="userDropdownVisible"></i>
-        </div>
+      <!-- Navigation Desktop -->
+      <nav class="hidden md:flex items-center gap-1">
+        <button
+          *ngFor="let item of mainMenuItems"
+          class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 flex items-center gap-2"
+        >
+          <i [class]="item.icon" class="text-base"></i>
+          <span>{{ item.label }}</span>
+        </button>
+      </nav>
 
-         Dropdown utilisateur (CSS pur)
-        <div class="user-dropdown" *ngIf="userDropdownVisible">
-          <div
-            *ngFor="let item of userMenuItems"
-            class="user-menu-item"
-            [class.separator]="item.separator"
+      <!-- Actions Section -->
+      <div class="flex items-center gap-2">
+
+        <!-- Search Button -->
+        <button
+          class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors hidden sm:flex items-center justify-center"
+          (click)="toggleSearch()"
+        >
+          <i class="pi pi-search text-lg"></i>
+        </button>
+
+        <!-- Notifications -->
+        <div class="relative">
+          <button
+            class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative flex items-center justify-center"
+            (click)="toggleNotifications()"
           >
-            <ng-container *ngIf="!item.separator">
-              <i [class]="item.icon" *ngIf="item.icon"></i>
-              <span>{{ item.label }}</span>
-            </ng-container>
+            <i class="pi pi-bell text-lg"></i>
+            <span *ngIf="notificationCount() > 0"
+                  class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-bounce-slow">
+              {{ notificationCount() }}
+            </span>
+          </button>
+
+          <!-- Notifications Dropdown -->
+          <div *ngIf="showNotifications"
+               class="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-soft-xl border border-gray-200 dark:border-gray-700 animate-fade-in overflow-hidden">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+              <div class="flex items-center justify-between">
+                <h3 class="font-semibold text-gray-900 dark:text-white">Notifications</h3>
+                <button class="text-xs text-primary-600 dark:text-primary-400 hover:underline"
+                        (click)="clearAllNotifications()">
+                  Tout marquer lu
+                </button>
+              </div>
+            </div>
+            <div class="max-h-96 overflow-y-auto">
+              <div *ngFor="let notif of notifications()"
+                   class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 border-b border-gray-100 dark:border-gray-700 last:border-0 cursor-pointer transition-colors"
+                   [class.bg-primary-50]="!notif.read"
+                   [class.dark:bg-primary-900/20]="!notif.read"
+              (click)="markAsRead(notif.id)">
+              <div class="flex gap-3">
+                <div class="flex-shrink-0">
+                  <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+                    <i class="pi pi-info-circle text-primary-600 dark:text-primary-400"></i>
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-medium text-gray-900 dark:text-white">{{ notif.title }}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ notif.message }}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">{{ notif.time }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-3 bg-gray-50 dark:bg-gray-700/50">
+            <button class="w-full text-center text-sm text-primary-600 dark:text-primary-400 hover:underline font-medium">
+              Voir toutes les notifications
+            </button>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Overlay pour fermer les dropdowns -->
-    <div class="dropdown-overlay"
-         *ngIf="notificationDropdownVisible || userDropdownVisible"
-         (click)="notificationDropdownVisible = false; userDropdownVisible = false">
+      <!-- Theme Toggle -->
+      <button
+        (click)="toggleTheme()"
+        class="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center justify-center"
+      >
+        <i class="pi text-lg" [ngClass]="isDarkMode() ? 'pi-sun' : 'pi-moon'"></i>
+      </button>
+
+      <!-- User Menu -->
+      <div class="relative">
+        <button
+          (click)="toggleUserMenu()"
+          class="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-semibold text-sm">
+            {{ userName().charAt(0) }}
+          </div>
+          <div class="hidden sm:block text-left">
+            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ userName() }}</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{ userRole() }}</p>
+          </div>
+          <i class="pi pi-chevron-down text-xs text-gray-500 dark:text-gray-400"></i>
+        </button>
+
+        <!-- User Dropdown -->
+        <div *ngIf="showUserMenu"
+             class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-soft-xl border border-gray-200 dark:border-gray-700 animate-fade-in overflow-hidden">
+          <div class="p-2">
+            <button *ngFor="let item of userMenuItems"
+                    class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    [class.border-t]="item.separator"
+                    [class.border-gray-200]="item.separator"
+                    [class.dark:border-gray-700]="item.separator"
+                    (click)="item.command && item.command()">
+              <i [class]="item.icon" class="text-base" *ngIf="item.icon"></i>
+              <span>{{ item.label }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              (click)="toggleMobileMenu()">
+        <i class="pi pi-bars text-lg"></i>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div *ngIf="showMobileMenu"
+       class="md:hidden py-4 border-t border-gray-200 dark:border-gray-800 animate-slide-in">
+    <nav class="flex flex-col gap-1">
+      <button
+        *ngFor="let item of mainMenuItems"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      >
+        <i [class]="item.icon" class="text-base"></i>
+        <span>{{ item.label }}</span>
+      </button>
+    </nav>
+  </div>
+  </div>
+
+  <!-- Overlay -->
+  <div *ngIf="showNotifications || showUserMenu"
+       class="fixed inset-0 z-40 bg-black/20 dark:bg-black/40"
+       (click)="closeAllDropdowns()">
   </div>
 </header>
