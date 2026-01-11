@@ -2,67 +2,8 @@
   <app-header></app-header>
 
   <main class="main-content">
-    <router-outlet></router-outlet>
-
-    <!-- Contenu temporaire si pas de routes -->
-    <div class="welcome-content" *ngIf="!hasRoutes">
-      <div class="welcome-card">
-        <div class="welcome-header">
-          <i class="pi pi-building welcome-icon"></i>
-          <h1>Bienvenue sur {{ title() }}</h1>
-          <p class="welcome-subtitle">Votre solution complète de gestion hôtelière</p>
-        </div>
-
-        <div class="features-grid">
-          <div class="feature-card">
-            <i class="pi pi-calendar-plus feature-icon"></i>
-            <h3>Gestion des Réservations</h3>
-            <p>Gérez facilement toutes vos réservations en temps réel</p>
-          </div>
-
-          <div class="feature-card">
-            <i class="pi pi-home feature-icon"></i>
-            <h3>Suivi des Chambres</h3>
-            <p>Surveillez l'état de toutes vos chambres instantanément</p>
-          </div>
-
-          <div class="feature-card">
-            <i class="pi pi-users feature-icon"></i>
-            <h3>Base de Données Clients</h3>
-            <p>Maintenez une base complète de vos clients fidèles</p>
-          </div>
-
-          <div class="feature-card">
-            <i class="pi pi-chart-line feature-icon"></i>
-            <h3>Analyses & Rapports</h3>
-            <p>Obtenez des insights détaillés sur vos performances</p>
-          </div>
-
-          <div class="feature-card">
-            <i class="pi pi-euro feature-icon"></i>
-            <h3>Gestion Financière</h3>
-            <p>Suivez vos revenus et optimisez votre rentabilité</p>
-          </div>
-
-          <div class="feature-card">
-            <i class="pi pi-cog feature-icon"></i>
-            <h3>Configuration Avancée</h3>
-            <p>Personnalisez le système selon vos besoins</p>
-          </div>
-        </div>
-
-        <div class="welcome-actions">
-          <button class="primary-btn">
-            <i class="pi pi-play"></i>
-            Commencer
-          </button>
-          <button class="secondary-btn">
-            <i class="pi pi-book"></i>
-            Documentation
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- Page d'accueil -->
+    <app-accueil></app-accueil>
   </main>
 
   <app-footer></app-footer>
