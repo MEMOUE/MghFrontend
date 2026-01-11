@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {Tag} from 'primeng/tag';
+import {Button} from 'primeng/button';
+import {Chip} from 'primeng/chip';
+import {Card} from 'primeng/card';
 
 @Component({
   selector: 'app-accueil',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Tag, Button, Chip, Card],
   templateUrl: './accueil.html',
   styleUrls: []
 })
