@@ -1,12 +1,19 @@
+/* ===================================== */
+/* 1️⃣ TOUS LES @import (STRICTEMENT EN PREMIER) */
+/* ===================================== */
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Tailwind v4 */
 @import "tailwindcss";
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 
+/* ===================================== */
+/* 2️⃣ STYLES GLOBAUX */
+/* ===================================== */
 
-/* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-/* Global Styles */
 * {
   border-color: theme('colors.gray.200');
 }
@@ -28,7 +35,10 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
-/* Custom Scrollbar */
+/* ===================================== */
+/* 3️⃣ SCROLLBAR */
+/* ===================================== */
+
 ::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5rem;
@@ -59,7 +69,10 @@ h1, h2, h3, h4, h5, h6 {
   background-color: theme('colors.gray.500');
 }
 
-/* PrimeNG Overrides */
+/* ===================================== */
+/* 4️⃣ PRIMENG VARIABLES */
+/* ===================================== */
+
 :root {
   --primary-color: #0ea5e9;
   --primary-color-text: #ffffff;
@@ -80,7 +93,10 @@ h1, h2, h3, h4, h5, h6 {
   --surface-border: #374151;
 }
 
-/* Animations */
+/* ===================================== */
+/* 5️⃣ ANIMATIONS */
+/* ===================================== */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -110,6 +126,3 @@ h1, h2, h3, h4, h5, h6 {
 .animate-slide-in {
   animation: slideIn 0.3s ease-out;
 }
-
-
-
