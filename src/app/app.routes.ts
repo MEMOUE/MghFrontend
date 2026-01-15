@@ -25,7 +25,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboadHotel,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: 'unauthorized',
