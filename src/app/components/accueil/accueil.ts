@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-accueil',
   standalone: true,
-  imports: [ButtonModule, CardModule, RouterModule],
+  imports: [ButtonModule, CardModule, RouterModule, CommonModule],
   templateUrl: './accueil.html',
 })
 export class Accueil {

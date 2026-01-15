@@ -1,14 +1,18 @@
 import { Routes } from '@angular/router';
 import { Login } from './components/auth/login/login';
 import { Register } from './components/auth/register/register';
+import { Accueil } from './components/accueil/accueil';
 import { AuthGuard } from './guard/auth-guard';
-import {DashboadHotel} from './components/dashboad-hotel/dashboad-hotel';
+import { DashboadHotel } from './components/dashboad-hotel/dashboad-hotel';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login',
-    pathMatch: 'full'
+    component: Accueil
+  },
+  {
+    path: 'accueil',
+    component: Accueil
   },
   {
     path: 'login',
@@ -20,7 +24,8 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboadHotel
+    component: DashboadHotel,
+    canActivate: [AuthGuard]
   },
   {
     path: 'unauthorized',
@@ -28,6 +33,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '/login'
+    redirectTo: '/accueil'
   }
 ];
