@@ -1,0 +1,322 @@
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <button
+        pButton
+        label="Retour à la liste"
+        icon="pi pi-arrow-left"
+        class="!bg-gray-100 !text-gray-700 !border-gray-300 mb-4"
+        (click)="goBack()">
+      </button>
+
+      <h1 class="text-3xl font-bold text-gray-900">
+        {{ isEditMode ? 'Modifier la chambre' : 'Nouvelle chambre' }}
+      </h1>
+      <p class="text-gray-600 mt-1">
+        {{ isEditMode ? 'Modifiez les informations de la chambre' : 'Ajoutez une nouvelle chambre à votre hôtel' }}
+      </p>
+    </div>
+
+    <!-- Message de chargement -->
+    <div *ngIf="loading" class="bg-white rounded-lg shadow-sm p-8 text-center">
+      <i class="pi pi-spinner pi-spin text-4xl text-indigo-600 mb-4"></i>
+      <p class="text-gray-600">Chargement...</p>
+    </div>
+
+    <!-- Formulaire -->
+    <form *ngIf="!loading" [formGroup]="chambreForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg shadow-sm p-8">
+
+      <!-- Messages d'erreur globaux -->
+      <div *ngIf="errorMessage" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
+        <div class="flex items-center">
+          <i class="pi pi-exclamation-triangle text-red-500 mr-2"></i>
+          <p class="text-red-700">{{ errorMessage }}</p>
+        </div>
+      </div>
+
+      <!-- Informations de base -->
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+          <i class="pi pi-info-circle mr-2 text-indigo-600"></i>
+          Informations de base
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Numéro de chambre -->
+          <div>
+            <label for="numero" class="block text-sm font-medium text-gray-700 mb-2">
+              Numéro de chambre <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="numero"
+              type="text"
+              pInputText
+              formControlName="numero"
+              placeholder="101, 102, etc."
+              class="w-full"
+              [class.border-red-500]="isFieldInvalid('numero')"
+            />
+            <small *ngIf="isFieldInvalid('numero')" class="text-red-500">
+              {{ getErrorMessage('numero') }}
+            </small>
+          </div>
+
+          <!-- Type de chambre -->
+          <div>
+            <label for="typeChambre" class="block text-sm font-medium text-gray-700 mb-2">
+              Type de chambre <span class="text-red-500">*</span>
+            </label>
+            <p-select
+              id="typeChambre"
+              [options]="typesChambres"
+              formControlName="typeChambre"
+              placeholder="Sélectionner un type"
+              optionLabel="label"
+              optionValue="value"
+              [filter]="true"
+              filterBy="label"
+              styleClass="w-full"
+              [class.ng-invalid]="isFieldInvalid('typeChambre')">
+            </p-select>
+            <small *ngIf="isFieldInvalid('typeChambre')" class="text-red-500">
+              Le type de chambre est obligatoire
+            </small>
+          </div>
+
+          <!-- Étage -->
+          <div>
+            <label for="etage" class="block text-sm font-medium text-gray-700 mb-2">
+              Étage <span class="text-red-500">*</span>
+            </label>
+            <p-select
+              id="etage"
+              [options]="etages"
+              formControlName="etage"
+              placeholder="Sélectionner un étage"
+              optionLabel="label"
+              optionValue="value"
+              styleClass="w-full"
+              [class.ng-invalid]="isFieldInvalid('etage')">
+            </p-select>
+            <small *ngIf="isFieldInvalid('etage')" class="text-red-500">
+              L'étage est obligatoire
+            </small>
+          </div>
+
+          <!-- Statut -->
+          <div>
+            <label for="statut" class="block text-sm font-medium text-gray-700 mb-2">
+              Statut <span class="text-red-500">*</span>
+            </label>
+            <p-select
+              id="statut"
+              [options]="statuts"
+              formControlName="statut"
+              placeholder="Sélectionner un statut"
+              optionLabel="label"
+              optionValue="value"
+              styleClass="w-full"
+              [class.ng-invalid]="isFieldInvalid('statut')">
+            </p-select>
+            <small *ngIf="isFieldInvalid('statut')" class="text-red-500">
+              Le statut est obligatoire
+            </small>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Capacité et Prix -->
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+          <i class="pi pi-users mr-2 text-indigo-600"></i>
+          Capacité et Tarification
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <!-- Capacité adultes -->
+          <div>
+            <label for="capaciteAdultes" class="block text-sm font-medium text-gray-700 mb-2">
+              Adultes <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="capaciteAdultes"
+              type="number"
+              pInputText
+              formControlName="capaciteAdultes"
+              min="1"
+              placeholder="Nombre d'adultes"
+              class="w-full"
+              [class.border-red-500]="isFieldInvalid('capaciteAdultes')"
+            />
+            <small *ngIf="isFieldInvalid('capaciteAdultes')" class="text-red-500">
+              {{ getErrorMessage('capaciteAdultes') }}
+            </small>
+          </div>
+
+          <!-- Capacité enfants -->
+          <div>
+            <label for="capaciteEnfants" class="block text-sm font-medium text-gray-700 mb-2">
+              Enfants
+            </label>
+            <input
+              id="capaciteEnfants"
+              type="number"
+              pInputText
+              formControlName="capaciteEnfants"
+              min="0"
+              placeholder="Nombre d'enfants"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Superficie -->
+          <div>
+            <label for="superficie" class="block text-sm font-medium text-gray-700 mb-2">
+              Superficie (m²)
+            </label>
+            <input
+              id="superficie"
+              type="number"
+              pInputText
+              formControlName="superficie"
+              min="0"
+              placeholder="ex: 25"
+              class="w-full"
+            />
+          </div>
+
+          <!-- Prix par nuit -->
+          <div class="md:col-span-3">
+            <label for="prixParNuit" class="block text-sm font-medium text-gray-700 mb-2">
+              Prix par nuit (FCFA) <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="prixParNuit"
+              type="number"
+              pInputText
+              formControlName="prixParNuit"
+              min="0"
+              placeholder="ex: 25000"
+              class="w-full"
+              [class.border-red-500]="isFieldInvalid('prixParNuit')"
+            />
+            <small *ngIf="isFieldInvalid('prixParNuit')" class="text-red-500">
+              {{ getErrorMessage('prixParNuit') }}
+            </small>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+          <i class="pi pi-file-edit mr-2 text-indigo-600"></i>
+          Description
+        </h2>
+
+        <div>
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+            Description de la chambre
+          </label>
+          <textarea
+            id="description"
+            pInputTextarea
+            formControlName="description"
+            rows="4"
+            placeholder="Décrivez la chambre, son ambiance, ses atouts..."
+            class="w-full"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Équipements -->
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+          <i class="pi pi-th-large mr-2 text-indigo-600"></i>
+          Équipements
+        </h2>
+
+        <p-multiSelect
+          [options]="equipementsDisponibles"
+          formControlName="equipements"
+          placeholder="Sélectionner les équipements"
+          [filter]="true"
+          filterBy="label"
+          display="chip"
+          styleClass="w-full"
+          [showToggleAll]="true"
+          [maxSelectedLabels]="3">
+        </p-multiSelect>
+      </div>
+
+      <!-- Disponibilité -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3">
+          <p-checkbox
+            formControlName="disponible"
+            [binary]="true"
+            inputId="disponible">
+          </p-checkbox>
+          <label for="disponible" class="text-sm font-medium text-gray-700 cursor-pointer">
+            Marquer cette chambre comme disponible
+          </label>
+        </div>
+      </div>
+
+      <!-- Notes internes -->
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+          <i class="pi pi-bookmark mr-2 text-indigo-600"></i>
+          Notes internes
+        </h2>
+
+        <div>
+          <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">
+            Notes (visibles uniquement par le personnel)
+          </label>
+          <textarea
+            id="notes"
+            pInputTextarea
+            formControlName="notes"
+            rows="3"
+            placeholder="Notes internes sur la chambre..."
+            class="w-full"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Boutons d'action -->
+      <div class="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
+        <button
+          type="button"
+          pButton
+          label="Annuler"
+          icon="pi pi-times"
+          class="!bg-gray-100 !text-gray-700 !border-gray-300"
+          (click)="goBack()"
+          [disabled]="submitting">
+        </button>
+        <button
+          type="submit"
+          pButton
+          [label]="isEditMode ? 'Enregistrer les modifications' : 'Créer la chambre'"
+          icon="pi pi-check"
+          class="!bg-indigo-600 !border-indigo-600"
+          [disabled]="chambreForm.invalid || submitting"
+          [loading]="submitting">
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- Toast pour les notifications -->
+<p-toast position="top-right"></p-toast>
