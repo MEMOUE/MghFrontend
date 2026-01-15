@@ -28,6 +28,28 @@ export const routes: Routes = [
     // canActivate: [AuthGuard]
   },
   {
+    path: 'chambres',
+    // canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./components/chambres/liste-chambre/liste-chambre').then(m => m.ListeChambres)
+      },
+      {
+        path: 'create',
+        loadComponent: () => import('./components/chambres/form-chambre/form-chambre').then(m => m.FormChambre)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./components/chambres/detail-chambre/detail-chambre').then(m => m.DetailChambre)
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () => import('./components/chambres/form-chambre/form-chambre').then(m => m.FormChambre)
+      }
+    ]
+  },
+  {
     path: 'unauthorized',
     loadComponent: () => import('./components/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)
   },
