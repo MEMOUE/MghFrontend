@@ -1,200 +1,172 @@
-<div class="home-page">
+<div class="w-full overflow-hidden">
 
   <!-- ================= HERO ================= -->
-  <section class="relative min-h-screen flex items-center bg-gradient-to-br from-orange-50 via-white to-green-50 overflow-hidden">
+  <section class="relative min-h-[95vh] flex items-center">
+    <img
+      src="https://images.unsplash.com/photo-1566073771259-6a8506099945"
+      class="absolute inset-0 w-full h-full object-cover"
+      alt="Hotel background">
+    <div class="absolute inset-0 bg-black/70"></div>
 
-    <div class="container mx-auto px-6 lg:px-12 relative z-10">
-      <div class="grid lg:grid-cols-2 gap-16 items-center">
+    <div class="relative z-10 container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center text-white">
+      <div class="space-y-6">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+          La solution SaaS moderne pour
+          <span class="text-yellow-400">gérer votre hôtel</span>
+        </h1>
 
-        <!-- Texte -->
-        <div class="text-center lg:text-left">
+        <p class="text-lg text-white/90 max-w-xl">
+          Centralisez les réservations, chambres, restauration,
+          finances et personnel sur une seule plateforme sécurisée.
+        </p>
 
-          <p-tag
-            value="Solution N°1 en Côte d'Ivoire"
-            icon="pi pi-flag"
-            class="mb-8">
-          </p-tag>
+        <div class="flex flex-wrap gap-4">
+          <button pButton
+                  label="Essai gratuit"
+                  icon="pi pi-play"
+                  class="p-button-lg bg-yellow-400 text-black border-none">
+          </button>
 
-          <h1 class="text-5xl lg:text-7xl font-black mb-6">
-            Gérez votre hôtel
-            <span class="block bg-gradient-to-r from-orange-600 to-green-600 bg-clip-text text-transparent">
-              en toute simplicité
-            </span>
-          </h1>
+          <button pButton
+                  label="Demander une démo"
+                  icon="pi pi-calendar"
+                  class="p-button-lg p-button-outlined text-white border-white">
+          </button>
+        </div>
+      </div>
 
-          <p class="text-xl text-gray-700 mb-10 max-w-2xl">
-            Plateforme hôtelière <span class="font-bold text-orange-600">100 % ivoirienne</span>
-          </p>
+      <div class="hidden lg:block">
+        <img
+          src="https://images.unsplash.com/photo-1557804506-669a67965ba0"
+          class="rounded-3xl shadow-2xl"
+          alt="Dashboard preview">
+      </div>
+    </div>
+  </section>
 
-          <div class="flex flex-col sm:flex-row gap-5 mb-10">
-            <p-button
-              label="Essai gratuit 14 jours"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              class="text-lg"
-              styleClass="bg-gradient-to-r from-orange-600 to-orange-700 border-0 rounded-2xl px-10 py-5 shadow-xl">
-            </p-button>
+  <!-- ================= FEATURES ================= -->
+  <section class="py-24 bg-gray-100">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800">
+          Une solution complète tout-en-un
+        </h2>
+        <p class="text-gray-600 mt-4">
+          Tous les modules essentiels pour une gestion efficace
+        </p>
+      </div>
 
-            <p-button
-              label="Voir la démo"
-              icon="pi pi-play"
-              class="text-lg"
-              styleClass="bg-white text-green-600 border-2 border-green-600 rounded-2xl px-10 py-5">
-            </p-button>
-          </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
 
-          <div class="flex flex-wrap gap-4">
-            <p-chip label="Sans engagement" icon="pi pi-check" />
-            <p-chip label="Support 24/7" icon="pi pi-check" />
-            <p-chip label="Installation gratuite" icon="pi pi-check" />
+        <div class="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267"
+               class="h-52 w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Gestion des Réservations</h3>
+            <p class="text-gray-600 text-sm">
+              Réservations en ligne, planning, check-in et check-out automatisés.
+            </p>
           </div>
         </div>
 
-        <!-- Image -->
-        <div class="hidden lg:block">
-          <img
-            src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa"
-            class="rounded-3xl shadow-2xl border-4 border-white">
+        <div class="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511"
+               class="h-52 w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Gestion des Chambres</h3>
+            <p class="text-gray-600 text-sm">
+              Suivi des états, ménage, maintenance et occupation en temps réel.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9"
+               class="h-52 w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Restauration</h3>
+            <p class="text-gray-600 text-sm">
+              Restaurant, bar, room service et facturation centralisée.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789"
+               class="h-52 w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Gestion des Stocks</h3>
+            <p class="text-gray-600 text-sm">
+              Inventaires, fournisseurs et alertes de rupture automatisées.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c"
+               class="h-52 w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Comptabilité & Finance</h3>
+            <p class="text-gray-600 text-sm">
+              Facturation, paiements Mobile Money et rapports financiers.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow hover:shadow-xl transition overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df"
+               class="h-52 w-full object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold mb-2">Gestion du Personnel</h3>
+            <p class="text-gray-600 text-sm">
+              Employés, rôles, planning et performances.
+            </p>
+          </div>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- ================= FONCTIONNALITÉS ================= -->
-  <section class="py-24 bg-white">
-    <div class="container mx-auto px-6 lg:px-12">
+  <!-- ================= SAAS BENEFITS ================= -->
+  <section class="py-24 bg-indigo-700 text-white">
+    <div class="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
 
-      <h2 class="text-5xl font-black text-center mb-20">
-        Fonctionnalités clés
-      </h2>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <p-card class="rounded-3xl shadow-lg">
-          <ng-template pTemplate="header">
-            <i class="pi pi-calendar text-4xl text-orange-600"></i>
-          </ng-template>
-          <ng-template pTemplate="title">Réservations en ligne</ng-template>
-          <p>Calendrier en temps réel et confirmations automatiques.</p>
-        </p-card>
-
-        <p-card class="rounded-3xl shadow-lg">
-          <ng-template pTemplate="header">
-            <i class="pi pi-building text-4xl text-green-600"></i>
-          </ng-template>
-          <ng-template pTemplate="title">Gestion des chambres</ng-template>
-          <p>Statut des chambres et planning ménage.</p>
-        </p-card>
-
-        <p-card class="rounded-3xl shadow-lg">
-          <ng-template pTemplate="header">
-            <i class="pi pi-users text-4xl text-orange-600"></i>
-          </ng-template>
-          <ng-template pTemplate="title">Gestion clients</ng-template>
-          <p>Profils détaillés et fidélisation.</p>
-        </p-card>
-
-        <p-card class="rounded-3xl shadow-lg">
-          <ng-template pTemplate="header">
-            <i class="pi pi-chart-bar text-4xl text-green-600"></i>
-          </ng-template>
-          <ng-template pTemplate="title">Statistiques</ng-template>
-          <p>Tableaux de bord avancés.</p>
-        </p-card>
-
-        <p-card class="rounded-3xl shadow-lg">
-          <ng-template pTemplate="header">
-            <i class="pi pi-wallet text-4xl text-orange-600"></i>
-          </ng-template>
-          <ng-template pTemplate="title">Facturation DGI</ng-template>
-          <p>Factures conformes normes ivoiriennes.</p>
-        </p-card>
-
-        <p-card class="rounded-3xl shadow-lg">
-          <ng-template pTemplate="header">
-            <i class="pi pi-lock text-4xl text-green-600"></i>
-          </ng-template>
-          <ng-template pTemplate="title">Sécurité</ng-template>
-          <p>Sauvegarde automatique et accès sécurisés.</p>
-        </p-card>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= TARIFS ================= -->
-  <section class="py-24 bg-gray-50">
-    <div class="container mx-auto px-6 lg:px-12">
-
-      <h2 class="text-5xl font-black text-center mb-20">
-        Tarification
-      </h2>
-
-      <div class="grid md:grid-cols-3 gap-8">
-
-        <p-card header="Starter" subheader="29 000 FCFA / mois">
-          <ul class="space-y-3">
-            <li><i class="pi pi-check text-green-600"></i> 20 chambres</li>
-            <li><i class="pi pi-check text-green-600"></i> Réservations</li>
-            <li><i class="pi pi-check text-green-600"></i> Facturation</li>
-          </ul>
-          <p-button label="Commencer" class="mt-6 w-full"></p-button>
-        </p-card>
-
-        <p-card class="bg-gradient-to-br from-orange-600 to-green-600 text-white shadow-2xl">
-          <ng-template pTemplate="title">Professional</ng-template>
-          <p class="text-3xl font-black mb-6">59 000 FCFA</p>
-          <ul class="space-y-3">
-            <li><i class="pi pi-check"></i> 50 chambres</li>
-            <li><i class="pi pi-check"></i> Statistiques</li>
-            <li><i class="pi pi-check"></i> Support 24/7</li>
-          </ul>
-          <p-button
-            label="Commencer"
-            styleClass="bg-white text-orange-600 w-full mt-6">
-          </p-button>
-        </p-card>
-
-        <p-card header="Enterprise" subheader="Sur mesure">
-          <ul class="space-y-3">
-            <li><i class="pi pi-check text-green-600"></i> Illimité</li>
-            <li><i class="pi pi-check text-green-600"></i> Multi-hôtels</li>
-          </ul>
-          <p-button label="Contactez-nous" class="mt-6 w-full"></p-button>
-        </p-card>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= CONTACT ================= -->
-  <section class="py-24 bg-white">
-    <div class="container mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-16">
+      <img src="https://images.unsplash.com/photo-1551434678-e076c223a692"
+           class="rounded-3xl shadow-2xl">
 
       <div>
-        <h2 class="text-5xl font-black mb-6">Contact</h2>
-        <p><i class="pi pi-phone"></i> +225 07 XX XX XX XX</p>
-        <p><i class="pi pi-envelope"></i> contact&#64;magestionhotel.ci</p>
-        <p><i class="pi pi-map-marker"></i> Abidjan</p>
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+          Pourquoi choisir notre solution SaaS ?
+        </h2>
+
+        <ul class="space-y-4 text-white/90 text-lg">
+          <li>✔️ Solution 100% cloud</li>
+          <li>✔️ Accès partout, à tout moment</li>
+          <li>✔️ Sécurité et sauvegarde des données</li>
+          <li>✔️ Paiements Mobile Money intégrés</li>
+          <li>✔️ Support client réactif</li>
+        </ul>
       </div>
-
-      <p-card>
-        <h3 class="text-2xl font-black mb-6">Message</h3>
-
-        <input type="text" placeholder="Nom complet" class="w-full mb-4" />
-        <input type="text" placeholder="Email" class="w-full mb-4" />
-        <textarea
-          pInputTextarea rows="5" placeholder="Message" class="w-full mb-6"></textarea>
-
-        <p-button
-          label="Envoyer"
-          icon="pi pi-send"
-          class="w-full">
-        </p-button>
-      </p-card>
 
     </div>
   </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="py-24 bg-gray-900 text-center text-white">
+    <h2 class="text-4xl font-bold mb-4">
+      Prêt à digitaliser votre établissement ?
+    </h2>
+    <p class="text-gray-400 mb-10">
+      Rejoignez les hôtels qui ont déjà modernisé leur gestion.
+    </p>
+
+    <button pButton
+            label="Créer mon compte"
+            icon="pi pi-arrow-right"
+            class="p-button-lg bg-yellow-400 text-black border-none">
+    </button>
+  </section>
+
 
 </div>

@@ -1,30 +1,45 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {Tag} from 'primeng/tag';
-import {Button} from 'primeng/button';
-import {Chip} from 'primeng/chip';
-import {Card} from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-accueil',
   standalone: true,
-  imports: [CommonModule, Tag, Button, Chip, Card],
+  imports: [ButtonModule, CardModule, RouterModule],
   templateUrl: './accueil.html',
-  styleUrls: []
 })
 export class Accueil {
-  constructor() {}
-
-  /**
-   * Fait défiler en douceur vers une section spécifique
-   */
-  scrollToSection(sectionId: string): void {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+  features = [
+    {
+      title: 'Gestion des Réservations',
+      icon: 'pi-calendar',
+      description: 'Réservations, check-in, check-out et disponibilité en temps réel.'
+    },
+    {
+      title: 'Gestion des Chambres',
+      icon: 'pi-home',
+      description: 'Suivi des chambres, ménage, maintenance et occupation.'
+    },
+    {
+      title: 'Restauration',
+      icon: 'pi-shopping-cart',
+      description: 'Restaurant, bar, room service et facturation.'
+    },
+    {
+      title: 'Comptabilité & Finance',
+      icon: 'pi-wallet',
+      description: 'Paiements, factures, rapports financiers automatisés.'
+    },
+    {
+      title: 'Rapports & Statistiques',
+      icon: 'pi-chart-line',
+      description: 'Analyse des performances et indicateurs clés.'
+    },
+    {
+      title: 'Gestion du Personnel',
+      icon: 'pi-users',
+      description: 'Employés, rôles, planning et suivi.'
     }
-  }
+  ];
 }
