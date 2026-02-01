@@ -38,8 +38,8 @@
 
         <!-- Auth Buttons -->
         <div class="auth-buttons">
-          <button class="btn-login">Connexion</button>
-          <button class="btn-demo">
+          <button [routerLink]="['/login']" class="btn-login">Connexion</button>
+          <button [routerLink]="['/register']" class="btn-demo">
             Démo Gratuite
           </button>
         </div>
@@ -80,8 +80,8 @@
         <span>Contact</span>
       </a>
       <div class="mobile-nav-divider"></div>
-      <button class="mobile-nav-button btn-login-mobile">Connexion</button>
-      <button class="mobile-nav-button btn-demo-mobile">Démo Gratuite</button>
+      <button [routerLink]="['/login']" class="mobile-nav-button btn-login-mobile">Connexion</button>
+      <button [routerLink]="['/register']" class="mobile-nav-button btn-demo-mobile">Démo Gratuite</button>
     </nav>
   </div>
 </header>

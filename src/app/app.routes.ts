@@ -33,25 +33,30 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () => import('./components/chambres/liste-chambre/liste-chambre').then(m => m.ListeChambres)
+        loadComponent: () => import('./components/chambres/liste-chambre/liste-chambre')
+          .then(m => m.ListeChambres)
       },
       {
-        path: 'create',
-        loadComponent: () => import('./components/chambres/form-chambre/form-chambre').then(m => m.FormChambre)
+        path: 'create',  // ✅ Route statique en premier
+        loadComponent: () => import('./components/chambres/form-chambre/form-chambre')
+          .then(m => m.FormChambre)
       },
       {
-        path: ':id',
-        loadComponent: () => import('./components/chambres/detail-chambre/detail-chambre').then(m => m.DetailChambre)
+        path: ':id/edit',  // ✅ Route avec paramètre spécifique
+        loadComponent: () => import('./components/chambres/form-chambre/form-chambre')
+          .then(m => m.FormChambre)
       },
       {
-        path: ':id/edit',
-        loadComponent: () => import('./components/chambres/form-chambre/form-chambre').then(m => m.FormChambre)
+        path: ':id',  // ✅ Route dynamique générique en dernier
+        loadComponent: () => import('./components/chambres/detail-chambre/detail-chambre')
+          .then(m => m.DetailChambre)
       }
     ]
   },
   {
     path: 'unauthorized',
-    loadComponent: () => import('./components/unauthorized/unauthorized.component').then(m => m.UnauthorizedComponent)
+    loadComponent: () => import('./components/unauthorized/unauthorized.component')
+      .then(m => m.UnauthorizedComponent)
   },
   {
     path: '**',
