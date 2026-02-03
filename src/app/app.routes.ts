@@ -4,6 +4,7 @@ import { Register } from './components/auth/register/register';
 import { Accueil } from './components/accueil/accueil';
 import { AuthGuard } from './guard/auth-guard';
 import { DashboadHotel } from './components/dashboad-hotel/dashboad-hotel';
+import { FormChambre } from './components/chambres/form-chambre/form-chambre';
 
 export const routes: Routes = [
   {
