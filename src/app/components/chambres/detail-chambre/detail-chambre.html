@@ -1,300 +1,153 @@
-<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-50 py-8 px-4">
   <div class="max-w-6xl mx-auto">
 
-    <!-- Header avec actions -->
+    <!-- Header -->
     <div class="mb-8 flex items-center justify-between">
       <div>
-        <button
-          pButton
-          label="Retour"
-          icon="pi pi-arrow-left"
-          class="!bg-gray-100 !text-gray-700 !border-gray-300 mb-4"
-          (click)="goBack()">
+        <button pButton label="Retour" icon="pi pi-arrow-left" 
+                class="!bg-gray-100 !text-gray-700 mb-4" (click)="goBack()">
         </button>
-        <h1 class="text-3xl font-bold text-gray-900">
-          Détails de la Chambre #{{ chambre?.numero }}
-        </h1>
+        <h1 class="text-3xl font-bold">Chambre #{{ chambre?.numero }}</h1>
       </div>
 
       <div class="flex gap-2" *ngIf="chambre">
-        <button
-          pButton
-          label="Modifier"
-          icon="pi pi-pencil"
-          class="!bg-indigo-600 !border-indigo-600"
-          (click)="editChambre()">
+        <button pButton label="Modifier" icon="pi pi-pencil" 
+                class="!bg-indigo-600" (click)="editChambre()">
         </button>
-        <button
-          pButton
-          icon="pi pi-trash"
-          class="!bg-red-600 !border-red-600"
-          (click)="confirmDelete()">
+        <button pButton icon="pi pi-trash" 
+                class="!bg-red-600" (click)="confirmDelete()">
         </button>
       </div>
     </div>
 
-    <!-- Message de chargement -->
+    <!-- Chargement -->
     <div *ngIf="loading" class="bg-white rounded-lg shadow-sm p-12 text-center">
       <i class="pi pi-spinner pi-spin text-5xl text-indigo-600 mb-4"></i>
-      <p class="text-gray-600 text-lg">Chargement des détails...</p>
+      <p class="text-gray-600 text-lg">Chargement...</p>
     </div>
 
-    <!-- Message d'erreur -->
+    <!-- Erreur -->
     <div *ngIf="errorMessage && !loading" class="bg-red-50 border-l-4 border-red-500 p-4 rounded mb-6">
-      <div class="flex items-center">
-        <i class="pi pi-exclamation-triangle text-red-500 mr-2"></i>
-        <p class="text-red-700">{{ errorMessage }}</p>
-      </div>
+      <p class="text-red-700">{{ errorMessage }}</p>
     </div>
 
-    <!-- Contenu des détails -->
+    <!-- Contenu -->
     <div *ngIf="chambre && !loading" class="space-y-6">
 
-      <!-- Galerie d'images -->
+      <!-- Image -->
       <div class="bg-white rounded-lg shadow-sm overflow-hidden">
         <div class="relative h-96 bg-gradient-to-br from-indigo-400 to-purple-500">
-          <img
-            *ngIf="chambre.image_principale"
-            [src]="chambre.image_principale"
-            [alt]="'Chambre ' + chambre.numero"
-            class="w-full h-full object-cover"
-          />
-          <div *ngIf="!chambre.image_principale" class="w-full h-full flex items-center justify-center">
+          <div class="w-full h-full flex items-center justify-center">
             <i class="pi pi-image text-white text-8xl opacity-50"></i>
           </div>
 
-          <!-- Badge Statut (en haut à droite) -->
           <div class="absolute top-6 right-6">
-            <span
-              class="px-4 py-2 rounded-lg text-sm font-bold shadow-lg"
+            <span class="px-4 py-2 rounded-lg text-sm font-bold shadow-lg"
               [ngClass]="{
-                'bg-green-500 text-white': chambre.etat === 'DISPONIBLE',
-                'bg-red-500 text-white': chambre.etat === 'OCCUPEE',
-                'bg-yellow-500 text-white': chambre.etat === 'MENAGE_EN_COURS',
-                'bg-blue-500 text-white': chambre.etat === 'MAINTENANCE' || chambre.etat === 'RESERVEE',
-                'bg-gray-500 text-white': chambre.etat === 'HORS_SERVICE'
-              }"
-            >
-              {{ getStatutLabel(chambre.etat || 'DISPONIBLE') }}
+                'bg-green-500 text-white': chambre.statut === 'DISPONIBLE',
+                'bg-red-500 text-white': chambre.statut === 'OCCUPEE',
+                'bg-yellow-500 text-white': chambre.statut === 'EN_NETTOYAGE',
+                'bg-blue-500 text-white': chambre.statut === 'EN_MAINTENANCE' || chambre.statut === 'RESERVEE',
+                'bg-gray-500 text-white': chambre.statut === 'HORS_SERVICE'
+              }">
+              {{ getStatutLabel(chambre.statut || 'DISPONIBLE') }}
             </span>
           </div>
 
-          <!-- Numéro de chambre (en bas à gauche) -->
           <div class="absolute bottom-6 left-6">
-            <span class="text-white text-5xl font-black drop-shadow-2xl">
-              #{{ chambre.numero }}
-            </span>
+            <span class="text-white text-5xl font-black">#{{ chambre.numero }}</span>
           </div>
 
-          <!-- Prix (en bas à droite) -->
-          <div class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2">
-            <div class="text-right">
-              <div class="text-3xl font-bold text-indigo-600">
-                {{ chambre.prix_nuit | number:'1.0-0' }}
-              </div>
-              <div class="text-sm text-gray-600">FCFA / nuit</div>
+          <div class="absolute bottom-6 right-6 bg-white/90 rounded-lg px-4 py-2">
+            <div class="text-3xl font-bold text-indigo-600">
+              {{ chambre.prixParNuit | number:'1.0-0' }}
             </div>
-          </div>
-        </div>
-
-        <!-- Images secondaires (si disponibles) -->
-        <div *ngIf="chambre.images_secondaires && chambre.images_secondaires.length > 0"
-             class="grid grid-cols-4 gap-2 p-4 bg-gray-50">
-          <div *ngFor="let image of chambre.images_secondaires"
-               class="h-24 rounded overflow-hidden cursor-pointer hover:opacity-75 transition">
-            <img [src]="image" [alt]="'Photo chambre ' + chambre.numero" class="w-full h-full object-cover">
+            <div class="text-sm text-gray-600">FCFA / nuit</div>
           </div>
         </div>
       </div>
 
-      <!-- Informations principales -->
+      <!-- Infos -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        <!-- Informations de base -->
         <div class="lg:col-span-2 space-y-6">
 
-          <!-- Type et Capacité -->
           <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <i class="pi pi-info-circle mr-2 text-indigo-600"></i>
-              Informations générales
-            </h2>
+            <h2 class="text-xl font-semibold mb-4">Informations</h2>
 
             <div class="grid grid-cols-2 gap-6">
               <div>
-                <div class="text-sm text-gray-500 mb-1">Type de chambre</div>
-                <div class="text-lg font-semibold text-gray-900">
-                  {{ getTypeLabel(chambre.type_chambre) }}
-                </div>
+                <div class="text-sm text-gray-500 mb-1">Type</div>
+                <div class="text-lg font-semibold">{{ getTypeLabel(chambre.type) }}</div>
               </div>
 
               <div>
                 <div class="text-sm text-gray-500 mb-1">Étage</div>
-                <div class="text-lg font-semibold text-gray-900">
+                <div class="text-lg font-semibold">
                   {{ chambre.etage === 0 ? 'Rez-de-chaussée' : 'Étage ' + chambre.etage }}
                 </div>
               </div>
 
               <div>
-                <div class="text-sm text-gray-500 mb-1">Capacité adultes</div>
-                <div class="text-lg font-semibold text-gray-900 flex items-center">
-                  <i class="pi pi-users mr-2 text-indigo-600"></i>
-                  {{ chambre.capacite_adultes }} personne(s)
-                </div>
-              </div>
-
-              <div>
-                <div class="text-sm text-gray-500 mb-1">Capacité enfants</div>
-                <div class="text-lg font-semibold text-gray-900 flex items-center">
-                  <i class="pi pi-user mr-2 text-indigo-600"></i>
-                  {{ chambre.capacite_enfants }} enfant(s)
-                </div>
+                <div class="text-sm text-gray-500 mb-1">Capacité</div>
+                <div class="text-lg font-semibold">{{ chambre.capacite }} personne(s)</div>
               </div>
 
               <div *ngIf="chambre.superficie">
                 <div class="text-sm text-gray-500 mb-1">Superficie</div>
-                <div class="text-lg font-semibold text-gray-900">
-                  {{ chambre.superficie }} m²
-                </div>
-              </div>
-
-              <div>
-                <div class="text-sm text-gray-500 mb-1">Disponibilité</div>
-                <div class="text-lg font-semibold" [class.text-green-600]="chambre.disponible"
-                     [class.text-red-600]="!chambre.disponible">
-                  {{ chambre.disponible ? 'Disponible' : 'Non disponible' }}
-                </div>
+                <div class="text-lg font-semibold">{{ chambre.superficie }} m²</div>
               </div>
             </div>
           </div>
 
-          <!-- Description -->
           <div *ngIf="chambre.description" class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <i class="pi pi-file-edit mr-2 text-indigo-600"></i>
-              Description
-            </h2>
-            <p class="text-gray-700 leading-relaxed">{{ chambre.description }}</p>
-          </div>
-
-          <!-- Équipements -->
-          <div *ngIf="chambre.equipements && chambre.equipements.length > 0"
-               class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <i class="pi pi-th-large mr-2 text-indigo-600"></i>
-              Équipements ({{ chambre.equipements.length }})
-            </h2>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-              <div *ngFor="let equipement of chambre.equipements"
-                   class="flex items-center gap-2 text-sm text-gray-700">
-                <i class="pi pi-check-circle text-green-500"></i>
-                <span>{{ equipement }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Notes internes -->
-          <div *ngIf="chambre.notes" class="bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <i class="pi pi-bookmark mr-2 text-yellow-600"></i>
-              Notes internes
-            </h2>
-            <p class="text-gray-700 leading-relaxed">{{ chambre.notes }}</p>
+            <h2 class="text-xl font-semibold mb-4">Description</h2>
+            <p class="text-gray-700">{{ chambre.description }}</p>
           </div>
 
         </div>
 
-        <!-- Carte récapitulative -->
+        <!-- Sidebar -->
         <div class="space-y-6">
 
-          <!-- Résumé -->
           <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4">Résumé</h2>
+            <h2 class="text-xl font-semibold mb-4">Résumé</h2>
 
             <div class="space-y-4">
-              <div class="flex items-center justify-between pb-3 border-b">
-                <span class="text-gray-600">Prix par nuit</span>
+              <div class="flex justify-between pb-3 border-b">
+                <span class="text-gray-600">Prix</span>
                 <span class="text-xl font-bold text-indigo-600">
-                  {{ chambre.prix_nuit | number:'1.0-0' }} FCFA
+                  {{ chambre.prixParNuit | number:'1.0-0' }} FCFA
                 </span>
               </div>
 
-              <div class="flex items-center justify-between pb-3 border-b">
+              <div class="flex justify-between pb-3 border-b">
                 <span class="text-gray-600">Statut</span>
-                <span
-                  class="px-3 py-1 rounded-full text-sm font-semibold"
+                <span class="px-3 py-1 rounded-full text-sm font-semibold"
                   [ngClass]="{
-                    'bg-green-100 text-green-800': chambre.etat === 'DISPONIBLE',
-                    'bg-red-100 text-red-800': chambre.etat === 'OCCUPEE',
-                    'bg-yellow-100 text-yellow-800': chambre.etat === 'MENAGE_EN_COURS',
-                    'bg-blue-100 text-blue-800': chambre.etat === 'MAINTENANCE' || chambre.etat === 'RESERVEE',
-                    'bg-gray-100 text-gray-800': chambre.etat === 'HORS_SERVICE'
-                  }"
-                >
-                  {{ getStatutLabel(chambre.etat || 'DISPONIBLE') }}
+                    'bg-green-100 text-green-800': chambre.statut === 'DISPONIBLE',
+                    'bg-red-100 text-red-800': chambre.statut === 'OCCUPEE',
+                    'bg-yellow-100 text-yellow-800': chambre.statut === 'EN_NETTOYAGE',
+                    'bg-blue-100 text-blue-800': chambre.statut === 'EN_MAINTENANCE' || chambre.statut === 'RESERVEE',
+                    'bg-gray-100 text-gray-800': chambre.statut === 'HORS_SERVICE'
+                  }">
+                  {{ getStatutLabel(chambre.statut || 'DISPONIBLE') }}
                 </span>
               </div>
 
-              <div class="flex items-center justify-between pb-3 border-b">
-                <span class="text-gray-600">Capacité totale</span>
-                <span class="font-semibold">
-                  {{ chambre.capacite_adultes + chambre.capacite_enfants }} pers.
-                </span>
-              </div>
-
-              <div class="flex items-center justify-between">
+              <div class="flex justify-between">
                 <span class="text-gray-600">Type</span>
-                <span class="font-semibold">
-                  {{ getTypeLabel(chambre.type_chambre) }}
-                </span>
+                <span class="font-semibold">{{ getTypeLabel(chambre.type) }}</span>
               </div>
             </div>
           </div>
 
-          <!-- Actions rapides -->
           <div class="bg-white rounded-lg shadow-sm p-6">
-            <h2 class="text-xl font-semibold text-gray-900 mb-4">Actions rapides</h2>
+            <h2 class="text-xl font-semibold mb-4">Actions</h2>
 
             <div class="space-y-3">
-              <button
-                pButton
-                label="Créer une réservation"
-                icon="pi pi-calendar-plus"
-                class="w-full !bg-green-600 !border-green-600"
-                [disabled]="!chambre.disponible">
+              <button pButton label="Changer statut" icon="pi pi-sync" 
+                      class="w-full !bg-blue-600" (click)="showChangeStatutDialog()">
               </button>
-
-              <button
-                pButton
-                label="Changer le statut"
-                icon="pi pi-sync"
-                class="w-full !bg-blue-600 !border-blue-600"
-                (click)="showChangeStatutDialog()">
-              </button>
-
-              <button
-                pButton
-                [label]="chambre.disponible ? 'Marquer indisponible' : 'Marquer disponible'"
-                [icon]="chambre.disponible ? 'pi pi-times-circle' : 'pi pi-check-circle'"
-                class="w-full !bg-orange-600 !border-orange-600"
-                (click)="toggleDisponibilite()">
-              </button>
-            </div>
-          </div>
-
-          <!-- Métadonnées -->
-          <div class="bg-gray-50 rounded-lg p-6 text-sm text-gray-600 space-y-2">
-            <div *ngIf="chambre.date_creation">
-              <span class="font-medium">Créée le:</span><br>
-              {{ chambre.date_creation | date:'dd/MM/yyyy à HH:mm' }}
-            </div>
-            <div *ngIf="chambre.date_modification">
-              <span class="font-medium">Modifiée le:</span><br>
-              {{ chambre.date_modification | date:'dd/MM/yyyy à HH:mm' }}
-            </div>
-            <div *ngIf="chambre.hotel_nom">
-              <span class="font-medium">Hôtel:</span><br>
-              {{ chambre.hotel_nom }}
             </div>
           </div>
 
@@ -307,83 +160,39 @@
   </div>
 </div>
 
-<!-- Dialog changement de statut -->
-<p-dialog
-  [(visible)]="showStatutDialog"
-  [modal]="true"
-  [closable]="true"
-  [style]="{width: '450px'}"
-  header="Changer le statut"
->
+<!-- Dialog statut -->
+<p-dialog [(visible)]="showStatutDialog" [modal]="true" [style]="{width: '450px'}" header="Changer statut">
   <div class="mb-4">
-    <label class="block text-sm font-medium text-gray-700 mb-2">
-      Nouveau statut
-    </label>
-    <p-select
-      [options]="statuts"
-      [(ngModel)]="nouveauStatut"
-      placeholder="Sélectionner un statut"
-      optionLabel="label"
-      optionValue="value"
-      styleClass="w-full">
+    <label class="block text-sm font-medium mb-2">Nouveau statut</label>
+    <p-select [options]="statuts" [(ngModel)]="nouveauStatut" 
+              placeholder="Sélectionner" optionLabel="label" optionValue="value" styleClass="w-full">
     </p-select>
   </div>
 
   <ng-template pTemplate="footer">
-    <button
-      pButton
-      label="Annuler"
-      icon="pi pi-times"
-      class="!bg-gray-100 !text-gray-700 !border-gray-300"
-      (click)="showStatutDialog = false">
-    </button>
-    <button
-      pButton
-      label="Confirmer"
-      icon="pi pi-check"
-      class="!bg-indigo-600 !border-indigo-600"
-      (click)="changeStatut()"
-      [disabled]="!nouveauStatut">
+    <button pButton label="Annuler" (click)="showStatutDialog = false"></button>
+    <button pButton label="Confirmer" class="!bg-indigo-600" 
+            (click)="changeStatut()" [disabled]="!nouveauStatut">
     </button>
   </ng-template>
 </p-dialog>
 
-<!-- Dialog de confirmation de suppression -->
-<p-dialog
-  [(visible)]="showDeleteDialog"
-  [modal]="true"
-  [closable]="true"
-  [style]="{width: '450px'}"
-  header="Confirmer la suppression"
->
+<!-- Dialog suppression -->
+<p-dialog [(visible)]="showDeleteDialog" [modal]="true" [style]="{width: '450px'}" header="Confirmer">
   <div class="flex items-start gap-4">
     <i class="pi pi-exclamation-triangle text-red-500 text-3xl"></i>
     <div>
-      <p class="text-gray-700 mb-2">
-        Êtes-vous sûr de vouloir supprimer la chambre <strong>#{{ chambre?.numero }}</strong> ?
-      </p>
-      <p class="text-sm text-gray-500">Cette action est irréversible.</p>
+      <p>Supprimer la chambre <strong>#{{ chambre?.numero }}</strong> ?</p>
+      <p class="text-sm text-gray-500">Irréversible.</p>
     </div>
   </div>
 
   <ng-template pTemplate="footer">
-    <button
-      pButton
-      label="Annuler"
-      icon="pi pi-times"
-      class="!bg-gray-100 !text-gray-700 !border-gray-300"
-      (click)="showDeleteDialog = false">
-    </button>
-    <button
-      pButton
-      label="Supprimer"
-      icon="pi pi-trash"
-      class="!bg-red-600 !border-red-600"
-      (click)="deleteChambre()"
-      [loading]="deleting">
+    <button pButton label="Annuler" (click)="showDeleteDialog = false"></button>
+    <button pButton label="Supprimer" class="!bg-red-600" 
+            (click)="deleteChambre()" [loading]="deleting">
     </button>
   </ng-template>
 </p-dialog>
 
-<!-- Toast pour les notifications -->
 <p-toast position="top-right"></p-toast>

@@ -15,7 +15,7 @@
         {{ isEditMode ? 'Modifier la chambre' : 'Nouvelle chambre' }}
       </h1>
       <p class="text-gray-600 mt-1">
-        {{ isEditMode ? 'Modifiez les informations de la chambre' : 'Ajoutez une nouvelle chambre à votre hôtel' }}
+        {{ isEditMode ? 'Modifiez les informations de la chambre' : 'Ajoutez une nouvelle chambre' }}
       </p>
     </div>
 
@@ -73,22 +73,22 @@
 
             <!-- Type de chambre -->
             <div>
-              <label for="typeChambre" class="block text-sm font-medium text-gray-700 mb-2">
+              <label for="type" class="block text-sm font-medium text-gray-700 mb-2">
                 Type de chambre <span class="text-red-500">*</span>
               </label>
               <p-select
-                id="typeChambre"
+                id="type"
                 [options]="typesChambres"
-                formControlName="typeChambre"
+                formControlName="type"
                 placeholder="Sélectionner un type"
                 optionLabel="label"
                 optionValue="value"
                 [filter]="true"
                 filterBy="label"
                 styleClass="w-full"
-                [class.ng-invalid]="isFieldInvalid('typeChambre')">
+                [class.ng-invalid]="isFieldInvalid('type')">
               </p-select>
-              @if (isFieldInvalid('typeChambre')) {
+              @if (isFieldInvalid('type')) {
                 <small class="text-red-500">
                   Le type de chambre est obligatoire
                 </small>
@@ -151,75 +151,64 @@
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <!-- Capacité adultes -->
+            <!-- Capacité -->
             <div>
-              <label for="capaciteAdultes" class="block text-sm font-medium text-gray-700 mb-2">
-                Adultes <span class="text-red-500">*</span>
+              <label for="capacite" class="block text-sm font-medium text-gray-700 mb-2">
+                Capacité (personnes) <span class="text-red-500">*</span>
               </label>
-              <input
-                id="capaciteAdultes"
-                type="number"
-                pInputText
-                formControlName="capaciteAdultes"
-                min="1"
-                placeholder="Nombre d'adultes"
-                class="w-full"
-                [class.border-red-500]="isFieldInvalid('capaciteAdultes')"
-              />
-              @if (isFieldInvalid('capaciteAdultes')) {
+              <p-inputNumber
+                id="capacite"
+                formControlName="capacite"
+                [min]="1"
+                [max]="20"
+                [showButtons]="true"
+                styleClass="w-full"
+                [class.ng-invalid]="isFieldInvalid('capacite')">
+              </p-inputNumber>
+              @if (isFieldInvalid('capacite')) {
                 <small class="text-red-500">
-                  {{ getErrorMessage('capaciteAdultes') }}
+                  {{ getErrorMessage('capacite') }}
                 </small>
               }
-            </div>
-
-            <!-- Capacité enfants -->
-            <div>
-              <label for="capaciteEnfants" class="block text-sm font-medium text-gray-700 mb-2">
-                Enfants
-              </label>
-              <input
-                id="capaciteEnfants"
-                type="number"
-                pInputText
-                formControlName="capaciteEnfants"
-                min="0"
-                placeholder="Nombre d'enfants"
-                class="w-full"
-              />
             </div>
 
             <!-- Superficie -->
             <div>
               <label for="superficie" class="block text-sm font-medium text-gray-700 mb-2">
-                Superficie (m²)
+                Superficie (m²) <span class="text-red-500">*</span>
               </label>
-              <input
+              <p-inputNumber
                 id="superficie"
-                type="number"
-                pInputText
                 formControlName="superficie"
-                min="0"
-                placeholder="ex: 25"
-                class="w-full"
-              />
+                [min]="1"
+                [max]="500"
+                [showButtons]="true"
+                suffix=" m²"
+                styleClass="w-full"
+                [class.ng-invalid]="isFieldInvalid('superficie')">
+              </p-inputNumber>
+              @if (isFieldInvalid('superficie')) {
+                <small class="text-red-500">
+                  {{ getErrorMessage('superficie') }}
+                </small>
+              }
             </div>
 
             <!-- Prix par nuit -->
-            <div class="md:col-span-3">
+            <div>
               <label for="prixParNuit" class="block text-sm font-medium text-gray-700 mb-2">
                 Prix par nuit (FCFA) <span class="text-red-500">*</span>
               </label>
-              <input
+              <p-inputNumber
                 id="prixParNuit"
-                type="number"
-                pInputText
                 formControlName="prixParNuit"
-                min="0"
-                placeholder="ex: 25000"
-                class="w-full"
-                [class.border-red-500]="isFieldInvalid('prixParNuit')"
-              />
+                mode="currency"
+                currency="XOF"
+                locale="fr-FR"
+                [min]="0"
+                styleClass="w-full"
+                [class.ng-invalid]="isFieldInvalid('prixParNuit')">
+              </p-inputNumber>
               @if (isFieldInvalid('prixParNuit')) {
                 <small class="text-red-500">
                   {{ getErrorMessage('prixParNuit') }}
@@ -246,7 +235,7 @@
               pInputTextarea
               formControlName="description"
               rows="4"
-              placeholder="Décrivez la chambre, son ambiance, ses atouts..."
+              placeholder="Décrivez la chambre..."
               class="w-full"
             ></textarea>
           </div>
@@ -259,52 +248,84 @@
             Équipements
           </h2>
 
-          <p-multiSelect
-            [options]="equipementsDisponibles"
-            formControlName="equipements"
-            placeholder="Sélectionner les équipements"
-            [filter]="true"
-            filterBy="label"
-            display="chip"
-            styleClass="w-full"
-            [showToggleAll]="true"
-            [maxSelectedLabels]="3">
-          </p-multiSelect>
-        </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                formControlName="wifi"
+                [binary]="true"
+                inputId="wifi">
+              </p-checkbox>
+              <label for="wifi" class="cursor-pointer text-gray-800">
+            <i class="pi pi-wifi mr-1"></i> WiFi
+</label>
 
-        <!-- Disponibilité -->
-        <div class="mb-8">
-          <div class="flex items-center gap-3">
-            <p-checkbox
-              formControlName="disponible"
-              [binary]="true"
-              inputId="disponible">
-            </p-checkbox>
-            <label for="disponible" class="text-sm font-medium text-gray-700 cursor-pointer">
-              Marquer cette chambre comme disponible
-            </label>
-          </div>
-        </div>
+            </div>
 
-        <!-- Notes internes -->
-        <div class="mb-8">
-          <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-            <i class="pi pi-bookmark mr-2 text-indigo-600"></i>
-            Notes internes
-          </h2>
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                formControlName="climatisation"
+                [binary]="true"
+                inputId="climatisation">
+              </p-checkbox>
+              <label for="climatisation" class="cursor-pointer text-gray-800">
+                <i class="pi pi-sun mr-1"></i> Climatisation
+              </label>
+            </div>
 
-          <div>
-            <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">
-              Notes (visibles uniquement par le personnel)
-            </label>
-            <textarea
-              id="notes"
-              pInputTextarea
-              formControlName="notes"
-              rows="3"
-              placeholder="Notes internes sur la chambre..."
-              class="w-full"
-            ></textarea>
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                formControlName="television"
+                [binary]="true"
+                inputId="television">
+              </p-checkbox>
+              <label for="television" class="cursor-pointer text-gray-800">
+                <i class="pi pi-desktop mr-1"></i> Télévision
+              </label>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                formControlName="minibar"
+                [binary]="true"
+                inputId="minibar">
+              </p-checkbox>
+              <label for="minibar" class="cursor-pointer text-gray-800">
+                <i class="pi pi-inbox mr-1"></i> Minibar
+              </label>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                formControlName="coffre"
+                [binary]="true"
+                inputId="coffre">
+              </p-checkbox>
+              <label for="coffre" class="cursor-pointer text-gray-800">
+                <i class="pi pi-lock mr-1"></i> Coffre-fort
+              </label>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                formControlName="balcon"
+                [binary]="true"
+                inputId="balcon">
+              </p-checkbox>
+              <label for="balcon" class="cursor-pointer text-gray-800">
+                <i class="pi pi-home mr-1"></i> Balcon
+              </label>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <p-checkbox
+                formControlName="vueMer"
+                [binary]="true"
+                inputId="vueMer">
+              </p-checkbox>
+              <label for="vueMer" class="cursor-pointer text-gray-800">
+                <i class="pi pi-eye mr-1"></i> Vue sur mer
+              </label>
+            </div>
           </div>
         </div>
 
@@ -322,7 +343,7 @@
           <button
             type="submit"
             pButton
-            [label]="isEditMode ? 'Enregistrer les modifications' : 'Créer la chambre'"
+            [label]="isEditMode ? 'Enregistrer' : 'Créer'"
             icon="pi pi-check"
             class="!bg-indigo-600 !border-indigo-600"
             [disabled]="chambreForm.invalid || submitting"
@@ -336,5 +357,4 @@
   </div>
 </div>
 
-<!-- Toast pour les notifications -->
 <p-toast position="top-right"></p-toast>

@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-gray-50 p-6">
   <div class="max-w-7xl mx-auto">
 
-    <!-- Header avec titre et bouton d'ajout -->
+    <!-- Header -->
     <div class="mb-8 flex items-center justify-between">
       <div>
         <h1 class="text-3xl font-bold text-gray-900">Gestion des Chambres</h1>
@@ -19,15 +19,13 @@
     <!-- Filtres -->
     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-
-        <!-- Recherche -->
         <div class="col-span-1 lg:col-span-2">
           <span class="p-input-icon-left w-full">
             <i class="pi pi-search"></i>
             <input
               type="text"
               pInputText
-              placeholder="Rechercher une chambre..."
+              placeholder="Rechercher..."
               [(ngModel)]="searchTerm"
               (input)="applyFilters()"
               class="w-full"
@@ -35,19 +33,17 @@
           </span>
         </div>
 
-        <!-- Filtre Type -->
         <div>
           <p-select
             [options]="typesChambres"
             [(ngModel)]="selectedType"
-            placeholder="Type de chambre"
+            placeholder="Type"
             [showClear]="true"
             (onChange)="applyFilters()"
             styleClass="w-full">
           </p-select>
         </div>
 
-        <!-- Filtre Statut -->
         <div>
           <p-select
             [options]="statuts"
@@ -58,62 +54,12 @@
             styleClass="w-full">
           </p-select>
         </div>
-
-        <!-- Filtre Étage -->
-        <div>
-          <p-select
-            [options]="etages"
-            [(ngModel)]="selectedEtage"
-            placeholder="Étage"
-            [showClear]="true"
-            (onChange)="applyFilters()"
-            styleClass="w-full">
-          </p-select>
-        </div>
-
-        <!-- Filtre Disponibilité -->
-        <div>
-          <p-select
-            [options]="disponibiliteOptions"
-            [(ngModel)]="selectedDisponibilite"
-            placeholder="Disponibilité"
-            [showClear]="true"
-            (onChange)="applyFilters()"
-            styleClass="w-full">
-          </p-select>
-        </div>
-
-        <!-- Filtre Prix Min -->
-        <div>
-          <input
-            type="number"
-            pInputText
-            placeholder="Prix min (FCFA)"
-            [(ngModel)]="prixMin"
-            (input)="applyFilters()"
-            class="w-full"
-          />
-        </div>
-
-        <!-- Filtre Prix Max -->
-        <div>
-          <input
-            type="number"
-            pInputText
-            placeholder="Prix max (FCFA)"
-            [(ngModel)]="prixMax"
-            (input)="applyFilters()"
-            class="w-full"
-          />
-        </div>
-
       </div>
 
-      <!-- Bouton Réinitialiser -->
       <div class="mt-4">
         <button
           pButton
-          label="Réinitialiser les filtres"
+          label="Réinitialiser"
           icon="pi pi-filter-slash"
           class="!bg-gray-100 !text-gray-700 !border-gray-300"
           (click)="resetFilters()">
@@ -121,148 +67,100 @@
       </div>
     </div>
 
-    <!-- Message de chargement -->
+    <!-- Chargement -->
     @if (loading) {
       <div class="text-center py-12">
         <i class="pi pi-spinner pi-spin text-4xl text-indigo-600"></i>
-        <p class="text-gray-600 mt-4">Chargement des chambres...</p>
+        <p class="text-gray-600 mt-4">Chargement...</p>
       </div>
     }
 
-    <!-- Message d'erreur -->
+    <!-- Erreur -->
     @if (errorMessage && !loading) {
       <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded mb-6">
-        <div class="flex items-center">
-          <i class="pi pi-exclamation-triangle text-red-500 mr-2"></i>
-          <p class="text-red-700">{{ errorMessage }}</p>
-        </div>
+        <p class="text-red-700">{{ errorMessage }}</p>
       </div>
     }
 
-    <!-- Grille des chambres -->
+    <!-- Grille -->
     @if (!loading && filteredChambres.length > 0) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @for (chambre of filteredChambres; track chambre.id) {
-          <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200">
-            <!-- Image -->
+          <div class="bg-white rounded-lg shadow-sm hover:shadow-lg transition">
             <div class="relative h-48 bg-gradient-to-br from-indigo-400 to-purple-500">
-              @if (chambre.image_principale) {
-                <img
-                  [src]="chambre.image_principale"
-                  [alt]="'Chambre ' + chambre.numero"
-                  class="w-full h-full object-cover"
-                />
-              } @else {
-                <div class="w-full h-full flex items-center justify-center">
-                  <i class="pi pi-image text-white text-6xl opacity-50"></i>
-                </div>
-              }
+              <div class="w-full h-full flex items-center justify-center">
+                <i class="pi pi-image text-white text-6xl opacity-50"></i>
+              </div>
 
-              <!-- Badge Statut -->
               <div class="absolute top-4 right-4">
                 <span
                   class="px-3 py-1 rounded-full text-xs font-semibold"
                   [ngClass]="{
-                    'bg-green-100 text-green-800': chambre.etat === 'DISPONIBLE',
-                    'bg-red-100 text-red-800': chambre.etat === 'OCCUPEE',
-                    'bg-yellow-100 text-yellow-800': chambre.etat === 'MENAGE_EN_COURS',
-                    'bg-blue-100 text-blue-800': chambre.etat === 'MAINTENANCE' || chambre.etat === 'RESERVEE',
-                    'bg-gray-100 text-gray-800': chambre.etat === 'HORS_SERVICE'
+                    'bg-green-100 text-green-800': chambre.statut === 'DISPONIBLE',
+                    'bg-red-100 text-red-800': chambre.statut === 'OCCUPEE',
+                    'bg-yellow-100 text-yellow-800': chambre.statut === 'EN_NETTOYAGE',
+                    'bg-blue-100 text-blue-800': chambre.statut === 'EN_MAINTENANCE' || chambre.statut === 'RESERVEE',
+                    'bg-gray-100 text-gray-800': chambre.statut === 'HORS_SERVICE'
                   }"
                 >
-                  {{ getStatutLabel(chambre.etat || 'DISPONIBLE') }}
+                  {{ getStatutLabel(chambre.statut || 'DISPONIBLE') }}
                 </span>
               </div>
 
-              <!-- Numéro de chambre -->
               <div class="absolute bottom-4 left-4">
-                <span class="text-white text-2xl font-bold drop-shadow-lg">
-                  #{{ chambre.numero }}
-                </span>
+                <span class="text-white text-2xl font-bold">#{{ chambre.numero }}</span>
               </div>
             </div>
 
-            <!-- Contenu -->
             <div class="p-6">
-              <!-- Type et Étage -->
               <div class="flex items-center justify-between mb-3">
-                <span class="text-lg font-semibold text-gray-900">
-                  {{ getTypeLabel(chambre.type_chambre) }}
+                <span class="text-lg font-semibold">
+                  {{ getTypeLabel(chambre.type) }}
                 </span>
-                <span class="text-sm text-gray-500">
-                  Étage {{ chambre.etage }}
-                </span>
+                <span class="text-sm text-gray-500">Étage {{ chambre.etage }}</span>
               </div>
 
-              <!-- Capacité -->
               <div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
                 <div class="flex items-center gap-1">
                   <i class="pi pi-users"></i>
-                  <span>{{ chambre.capacite_adultes }} adulte(s)</span>
+                  <span>{{ chambre.capacite }} pers.</span>
                 </div>
-                @if (chambre.capacite_enfants > 0) {
-                  <div class="flex items-center gap-1">
-                    <i class="pi pi-user"></i>
-                    <span>{{ chambre.capacite_enfants }} enfant(s)</span>
-                  </div>
-                }
               </div>
 
-              <!-- Prix -->
               <div class="mb-4">
                 <span class="text-2xl font-bold text-indigo-600">
-                  {{ chambre.prix_nuit | number:'1.0-0' }}
+                  {{ chambre.prixParNuit | number:'1.0-0' }}
                 </span>
                 <span class="text-sm text-gray-600 ml-1">FCFA / nuit</span>
               </div>
 
-              <!-- Description (tronquée) -->
               @if (chambre.description) {
                 <p class="text-sm text-gray-600 line-clamp-2 mb-4">
                   {{ chambre.description }}
                 </p>
               }
 
-              <!-- Équipements (aperçu) -->
-              @if (chambre.equipements && chambre.equipements.length > 0) {
-                <div class="mb-4">
-                  <div class="flex flex-wrap gap-2">
-                    @for (equipement of chambre.equipements.slice(0, 3); track equipement) {
-                      <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
-                        {{ equipement }}
-                      </span>
-                    }
-                    @if (chambre.equipements.length > 3) {
-                      <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-semibold">
-                        +{{ chambre.equipements.length - 3 }}
-                      </span>
-                    }
-                  </div>
-                </div>
-              }
-
-              <!-- Actions -->
-              <div class="flex gap-2 pt-4 border-t border-gray-200">
+              <div class="flex gap-2 pt-4 border-t">
                 <button
                   pButton
                   label="Détails"
                   icon="pi pi-eye"
                   class="flex-1 !bg-white !text-indigo-600 !border-indigo-600"
-                  (click)="viewDetails(chambre.id!)"
-                ></button>
+                  (click)="viewDetails(chambre.id!)">
+                </button>
                 <button
                   pButton
                   label="Modifier"
                   icon="pi pi-pencil"
-                  class="flex-1 !bg-indigo-600 !border-indigo-600"
-                  (click)="editChambre(chambre.id!)"
-                ></button>
+                  class="flex-1 !bg-indigo-600"
+                  (click)="editChambre(chambre.id!)">
+                </button>
                 <button
                   pButton
                   icon="pi pi-trash"
-                  class="!bg-red-600 !border-red-600"
-                  (click)="confirmDelete(chambre)"
-                ></button>
+                  class="!bg-red-600"
+                  (click)="confirmDelete(chambre)">
+                </button>
               </div>
             </div>
           </div>
@@ -270,65 +168,35 @@
       </div>
     }
 
-    <!-- Message aucun résultat -->
+    <!-- Vide -->
     @if (!loading && filteredChambres.length === 0) {
       <div class="text-center py-12">
         <i class="pi pi-inbox text-6xl text-gray-300 mb-4"></i>
-        <p class="text-gray-500 text-lg">Aucune chambre trouvée</p>
-        @if (hasActiveFilters()) {
-          <button
-            pButton
-            label="Réinitialiser les filtres"
-            icon="pi pi-filter-slash"
-            class="!bg-indigo-600 !border-indigo-600 mt-4"
-            (click)="resetFilters()"
-          ></button>
-        }
+        <p class="text-gray-500 text-lg">Aucune chambre</p>
       </div>
     }
 
   </div>
 </div>
 
-<!-- Dialog de confirmation de suppression -->
+<!-- Dialog suppression -->
 <p-dialog
   [(visible)]="showDeleteDialog"
   [modal]="true"
-  [closable]="true"
   [style]="{width: '450px'}"
-  header="Confirmer la suppression"
+  header="Confirmer"
 >
   <div class="flex items-start gap-4">
     <i class="pi pi-exclamation-triangle text-red-500 text-3xl"></i>
     <div>
-      <p class="text-gray-700 mb-2">
-        Êtes-vous sûr de vouloir supprimer la chambre
-        <strong>{{ chambreToDelete?.numero }}</strong> ?
-      </p>
-      <p class="text-sm text-gray-500">
-        Cette action est irréversible.
-      </p>
+      <p>Supprimer la chambre <strong>{{ chambreToDelete?.numero }}</strong> ?</p>
     </div>
   </div>
 
   <ng-template pTemplate="footer">
-    <button
-      pButton
-      label="Annuler"
-      icon="pi pi-times"
-      class="!bg-gray-100 !text-gray-700 !border-gray-300"
-      (click)="showDeleteDialog = false"
-    ></button>
-    <button
-      pButton
-      label="Supprimer"
-      icon="pi pi-trash"
-      class="!bg-red-600 !border-red-600"
-      (click)="deleteChambre()"
-      [loading]="deleting"
-    ></button>
+    <button pButton label="Annuler" (click)="showDeleteDialog = false"></button>
+    <button pButton label="Supprimer" class="!bg-red-600" (click)="deleteChambre()" [loading]="deleting"></button>
   </ng-template>
 </p-dialog>
 
-<!-- Toast pour les notifications -->
 <p-toast position="top-right"></p-toast>

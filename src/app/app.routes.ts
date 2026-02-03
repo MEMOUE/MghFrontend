@@ -4,12 +4,12 @@ import { Register } from './components/auth/register/register';
 import { Accueil } from './components/accueil/accueil';
 import { AuthGuard } from './guard/auth-guard';
 import { DashboadHotel } from './components/dashboad-hotel/dashboad-hotel';
-import { FormChambre } from './components/chambres/form-chambre/form-chambre';
 
 export const routes: Routes = [
   {
     path: '',
-    component: Accueil
+    component: Accueil,
+    pathMatch: 'full'
   },
   {
     path: 'accueil',
@@ -34,23 +34,51 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        pathMatch: 'full',
         loadComponent: () => import('./components/chambres/liste-chambre/liste-chambre')
           .then(m => m.ListeChambres)
       },
       {
-        path: 'create',  // ✅ Route statique en premier
+        path: 'create',
         loadComponent: () => import('./components/chambres/form-chambre/form-chambre')
           .then(m => m.FormChambre)
       },
       {
-        path: ':id/edit',  // ✅ Route avec paramètre spécifique
+        path: ':id/edit',
         loadComponent: () => import('./components/chambres/form-chambre/form-chambre')
           .then(m => m.FormChambre)
       },
       {
-        path: ':id',  // ✅ Route dynamique générique en dernier
+        path: ':id',
         loadComponent: () => import('./components/chambres/detail-chambre/detail-chambre')
           .then(m => m.DetailChambre)
+      }
+    ]
+  },
+  { 
+    path: 'reservation',
+    // canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./components/reservations/listrservation/listrservation')
+          .then(m => m.Listrservation)
+      },
+      {
+        path: 'create',
+        loadComponent: () => import('./components/reservations/creatrservation/creatrservation')
+          .then(m => m.Creatrservation)
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () => import('./components/reservations/creatrservation/creatrservation')
+          .then(m => m.Creatrservation)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./components/reservations/detail-reservation/detail-reservation')
+          .then(m => m.DetailReservation)
       }
     ]
   },

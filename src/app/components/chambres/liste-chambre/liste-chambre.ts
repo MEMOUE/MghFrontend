@@ -13,10 +13,9 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 // Services et modèles
-import { ChambreService } from '../../../services/chambre.service';
+import { ChambreService, Chambre } from '../../../services/chambre.service';
 import { AuthService } from '../../../services/auth.service';
 import {
-  Chambre,
   TypeChambre,
   StatutChambre,
   TYPE_CHAMBRE_LABELS,
@@ -119,7 +118,7 @@ export class ListeChambres implements OnInit, OnDestroy {
     this.loading = true;
     this.errorMessage = '';
 
-    const filters = this.hotelId ? { hotel: this.hotelId } : undefined;
+    const filters = this.hotelId ? { hotelId: this.hotelId } : undefined;
 
     this.chambreService.getChambres(filters)
       .pipe(takeUntil(this.destroy$))
@@ -147,18 +146,18 @@ export class ListeChambres implements OnInit, OnDestroy {
       filtered = filtered.filter(c =>
         c.numero.toLowerCase().includes(term) ||
         c.description?.toLowerCase().includes(term) ||
-        this.getTypeLabel(c.type_chambre).toLowerCase().includes(term)
+        this.getTypeLabel(c.type).toLowerCase().includes(term)
       );
     }
 
     // Filtre type
     if (this.selectedType) {
-      filtered = filtered.filter(c => c.type_chambre === this.selectedType);
+      filtered = filtered.filter(c => c.type === this.selectedType);
     }
 
     // Filtre statut
     if (this.selectedStatut) {
-      filtered = filtered.filter(c => c.etat === this.selectedStatut);
+      filtered = filtered.filter(c => c.statut === this.selectedStatut);
     }
 
     // Filtre étage
@@ -166,17 +165,12 @@ export class ListeChambres implements OnInit, OnDestroy {
       filtered = filtered.filter(c => c.etage === this.selectedEtage);
     }
 
-    // Filtre disponibilité
-    if (this.selectedDisponibilite !== null) {
-      filtered = filtered.filter(c => c.disponible === this.selectedDisponibilite);
-    }
-
     // Filtre prix
     if (this.prixMin !== null) {
-      filtered = filtered.filter(c => c.prix_nuit >= this.prixMin!);
+      filtered = filtered.filter(c => c.prixParNuit >= this.prixMin!);
     }
     if (this.prixMax !== null) {
-      filtered = filtered.filter(c => c.prix_nuit <= this.prixMax!);
+      filtered = filtered.filter(c => c.prixParNuit <= this.prixMax!);
     }
 
     this.filteredChambres = filtered;

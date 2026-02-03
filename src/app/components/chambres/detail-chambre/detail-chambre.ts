@@ -12,9 +12,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 // Services et modèles
-import { ChambreService } from '../../../services/chambre.service';
+import { ChambreService, Chambre } from '../../../services/chambre.service';
 import {
-  Chambre,
   TypeChambre,
   StatutChambre,
   TYPE_CHAMBRE_LABELS,
@@ -99,8 +98,8 @@ export class DetailChambre implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: (error) => {
-          console.error('Erreur lors du chargement de la chambre:', error);
-          this.errorMessage = 'Impossible de charger les détails de la chambre';
+          console.error('Erreur:', error);
+          this.errorMessage = 'Impossible de charger la chambre';
           this.showError('Erreur', this.errorMessage);
           this.loading = false;
         }
@@ -134,64 +133,38 @@ export class DetailChambre implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.showSuccess('Succès', `Chambre #${this.chambre?.numero} supprimée avec succès`);
+          this.showSuccess('Succès', `Chambre #${this.chambre?.numero} supprimée`);
           this.deleting = false;
           this.showDeleteDialog = false;
-
-          // Redirection après un court délai
-          setTimeout(() => {
-            this.router.navigate(['/chambres']);
-          }, 1500);
+          setTimeout(() => this.router.navigate(['/chambres']), 1500);
         },
         error: (error) => {
-          console.error('Erreur lors de la suppression:', error);
-          this.showError('Erreur', 'Impossible de supprimer la chambre');
+          console.error('Erreur:', error);
+          this.showError('Erreur', 'Impossible de supprimer');
           this.deleting = false;
         }
       });
   }
 
   showChangeStatutDialog(): void {
-    this.nouveauStatut = this.chambre?.etat || null;
+    this.nouveauStatut = this.chambre?.statut as StatutChambre || null;
     this.showStatutDialog = true;
   }
 
   changeStatut(): void {
     if (!this.chambreId || !this.nouveauStatut) return;
 
-    this.chambreService.updateChambre(this.chambreId, { etat: this.nouveauStatut })
+    this.chambreService.updateChambre(this.chambreId, { statut: this.nouveauStatut })
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (chambre) => {
           this.chambre = chambre;
-          this.showSuccess('Succès', 'Statut mis à jour avec succès');
+          this.showSuccess('Succès', 'Statut mis à jour');
           this.showStatutDialog = false;
         },
         error: (error) => {
-          console.error('Erreur lors du changement de statut:', error);
+          console.error('Erreur:', error);
           this.showError('Erreur', 'Impossible de changer le statut');
-        }
-      });
-  }
-
-  toggleDisponibilite(): void {
-    if (!this.chambreId || !this.chambre) return;
-
-    const nouvelleDisponibilite = !this.chambre.disponible;
-
-    this.chambreService.toggleDisponibilite(this.chambreId, nouvelleDisponibilite)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (chambre) => {
-          this.chambre = chambre;
-          const message = nouvelleDisponibilite
-            ? 'Chambre marquée comme disponible'
-            : 'Chambre marquée comme non disponible';
-          this.showSuccess('Succès', message);
-        },
-        error: (error) => {
-          console.error('Erreur lors du changement de disponibilité:', error);
-          this.showError('Erreur', 'Impossible de changer la disponibilité');
         }
       });
   }

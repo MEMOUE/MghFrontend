@@ -1,5 +1,6 @@
 // ===============================
 // MODELS POUR LE SYSTÈME HÔTELIER
+// Compatible avec le backend Spring Boot
 // ===============================
 
 export interface Hotel {
@@ -25,26 +26,33 @@ export interface Hotel {
   updatedAt?: Date;
 }
 
+// Interface compatible avec le backend Spring Boot
 export interface Chambre {
   id?: number;
-  hotel: number;
-  hotel_nom?: string;
   numero: string;
-  type_chambre: TypeChambre;
-  etage: number;
-  capacite_adultes: number;
-  capacite_enfants: number;
-  superficie?: number;
-  prix_nuit: number;
+  type: string;  // TypeChambre enum
+  prixParNuit: number;
+  capacite: number;  // Capacité totale
+  superficie: number;
   description?: string;
-  equipements?: string[];
-  image_principale?: string;
-  images_secondaires?: string[];
-  disponible: boolean;
-  etat?: StatutChambre;
-  notes?: string;
-  date_creation?: string;
-  date_modification?: string;
+  statut: string;  // StatutChambre enum
+  etage: number;
+  
+  // Équipements (noms exacts du backend)
+  wifi?: boolean;
+  climatisation?: boolean;
+  television?: boolean;
+  minibar?: boolean;
+  coffre?: boolean;  // PAS coffre_fort
+  balcon?: boolean;
+  vueMer?: boolean;  // PAS vue_mer
+  
+  // Champs en lecture seule
+  hotelId?: number;
+  hotelName?: string;
+  images?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export enum TypeChambre {
@@ -54,34 +62,28 @@ export enum TypeChambre {
   TRIPLE = 'TRIPLE',
   SUITE = 'SUITE',
   SUITE_JUNIOR = 'SUITE_JUNIOR',
-  SUITE_EXECUTIVE = 'SUITE_EXECUTIVE',
   SUITE_PRESIDENTIELLE = 'SUITE_PRESIDENTIELLE',
   FAMILIALE = 'FAMILIALE',
-  STUDIO = 'STUDIO',
-  APPARTEMENT = 'APPARTEMENT'
+  DELUXE = 'DELUXE'
 }
 
 export enum StatutChambre {
   DISPONIBLE = 'DISPONIBLE',
   OCCUPEE = 'OCCUPEE',
-  MENAGE_EN_COURS = 'MENAGE_EN_COURS',
-  MAINTENANCE = 'MAINTENANCE',
-  HORS_SERVICE = 'HORS_SERVICE',
-  RESERVEE = 'RESERVEE'
+  RESERVEE = 'RESERVEE',
+  EN_NETTOYAGE = 'EN_NETTOYAGE',
+  EN_MAINTENANCE = 'EN_MAINTENANCE',
+  HORS_SERVICE = 'HORS_SERVICE'
 }
 
 export interface ChambreFilter {
-  hotel?: number;
-  type_chambre?: string;
+  hotelId?: number;
+  type?: string;
   etage?: number;
-  capacite_adultes?: number;
-  prix_min?: number;
-  prix_max?: number;
-  disponible?: boolean;
-  etat?: StatutChambre;
-  date_debut?: Date;
-  date_fin?: Date;
-  equipements?: string[];
+  capacite?: number;
+  prixMin?: number;
+  prixMax?: number;
+  statut?: string;
 }
 
 export interface HotelFilter {
@@ -103,33 +105,59 @@ export const TYPE_CHAMBRE_LABELS: Record<TypeChambre, string> = {
   [TypeChambre.TRIPLE]: 'Chambre Triple',
   [TypeChambre.SUITE]: 'Suite',
   [TypeChambre.SUITE_JUNIOR]: 'Suite Junior',
-  [TypeChambre.SUITE_EXECUTIVE]: 'Suite Executive',
   [TypeChambre.SUITE_PRESIDENTIELLE]: 'Suite Présidentielle',
   [TypeChambre.FAMILIALE]: 'Chambre Familiale',
-  [TypeChambre.STUDIO]: 'Studio',
-  [TypeChambre.APPARTEMENT]: 'Appartement'
+  [TypeChambre.DELUXE]: 'Chambre Deluxe'
 };
 
 // Labels pour les statuts de chambres
 export const STATUT_CHAMBRE_LABELS: Record<StatutChambre, string> = {
   [StatutChambre.DISPONIBLE]: 'Disponible',
   [StatutChambre.OCCUPEE]: 'Occupée',
-  [StatutChambre.MENAGE_EN_COURS]: 'Ménage en cours',
-  [StatutChambre.MAINTENANCE]: 'Maintenance',
-  [StatutChambre.HORS_SERVICE]: 'Hors service',
-  [StatutChambre.RESERVEE]: 'Réservée'
+  [StatutChambre.RESERVEE]: 'Réservée',
+  [StatutChambre.EN_NETTOYAGE]: 'En nettoyage',
+  [StatutChambre.EN_MAINTENANCE]: 'En maintenance',
+  [StatutChambre.HORS_SERVICE]: 'Hors service'
 };
 
 // Couleurs pour les statuts
 export const STATUT_CHAMBRE_COLORS: Record<StatutChambre, string> = {
   [StatutChambre.DISPONIBLE]: 'success',
   [StatutChambre.OCCUPEE]: 'danger',
-  [StatutChambre.MENAGE_EN_COURS]: 'warning',
-  [StatutChambre.MAINTENANCE]: 'info',
-  [StatutChambre.HORS_SERVICE]: 'secondary',
-  [StatutChambre.RESERVEE]: 'primary'
+  [StatutChambre.RESERVEE]: 'warning',
+  [StatutChambre.EN_NETTOYAGE]: 'info',
+  [StatutChambre.EN_MAINTENANCE]: 'warning',
+  [StatutChambre.HORS_SERVICE]: 'secondary'
 };
 
+// ...existing code...
+
+export interface Reservation {
+  id?: number;
+  numeroReservation?: string;
+  chambreId: number;
+  dateArrivee: Date | string;
+  dateDepart: Date | string;
+  nombreAdultes: number;
+  nombreEnfants?: number;
+  clientPrenom: string;
+  clientNom: string;
+  clientTelephone: string;
+  clientEmail?: string;
+  clientTypePiece?: string;
+  clientPieceIdentite?: string;
+  clientDateNaissance?: Date | string;
+  clientNationalite?: string;
+  clientAdresse?: string;
+  clientVille?: string;
+  clientPays?: string;
+  montantPaye?: number;
+  modePaiement?: string;
+  notes?: string;
+  demandesSpeciales?: string;
+};
+
+// ...existing code...
 // Équipements disponibles
 export const EQUIPEMENTS_CHAMBRE = [
   'WiFi',
