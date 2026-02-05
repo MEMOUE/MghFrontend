@@ -57,7 +57,7 @@ export const routes: Routes = [
   },
   { 
     path: 'reservation',
-    // canActivate: [AuthGuard],
+     canActivate: [AuthGuard],
     children: [
       {
         path: '',
