@@ -14,7 +14,7 @@ interface ApiResponse<T> {
   providedIn: 'root'
 })
 export class ReservationService {
-  private apiUrl = `${environment.apiUrl}/api/reservations`;
+  private apiUrl = `${environment.apiUrl}/reservations`;
 
   constructor(private http: HttpClient) {}
 
@@ -93,4 +93,9 @@ export class ReservationService {
   cancelReservation(id: number): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.apiUrl}/${id}`);
   }
+
+  addPaiement(reservationId: number, paiementData: any): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/${reservationId}/paiements`, paiementData);
+}
+
 }

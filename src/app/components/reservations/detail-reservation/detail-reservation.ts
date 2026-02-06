@@ -31,7 +31,8 @@ import { ReservationService } from '../../../services/reservation.service';
 interface ModePaiementOption {
   label: string;
   value: string;
-}
+};
+type Severity = "success" | "info" | "warn" | "danger" | "secondary" | "contrast" | null | undefined;
 
 @Component({
   selector: 'app-detail-reservation',
@@ -276,8 +277,10 @@ export class DetailReservation implements OnInit {
 
     this.reservationService.addPaiement(
       this.reservation.id!,
-      this.montantPaiement,
-      this.modePaiementSelected
+      {
+        montant: this.montantPaiement,
+        modePaiement: this.modePaiementSelected
+      }
     ).subscribe({
       next: (response) => {
         if (response.success) {
@@ -300,14 +303,14 @@ export class DetailReservation implements OnInit {
     });
   }
 
-  getStatutSeverity(statut: StatutReservation | undefined): string {
+  getStatutSeverity(statut: StatutReservation | undefined): Severity {
     switch (statut) {
       case StatutReservation.CONFIRMEE:
         return 'success';
       case StatutReservation.EN_COURS:
         return 'info';
       case StatutReservation.EN_ATTENTE:
-        return 'warning';
+        return 'warn';
       case StatutReservation.ANNULEE:
         return 'danger';
       case StatutReservation.TERMINEE:
@@ -319,12 +322,12 @@ export class DetailReservation implements OnInit {
     }
   }
 
-  getStatutPaiementSeverity(statut: StatutPaiement | undefined): string {
+  getStatutPaiementSeverity(statut: StatutPaiement | undefined): Severity {
     switch (statut) {
       case StatutPaiement.PAYE:
         return 'success';
       case StatutPaiement.ACOMPTE:
-        return 'warning';
+        return 'warn';
       case StatutPaiement.NON_PAYE:
         return 'danger';
       case StatutPaiement.REMBOURSE:
