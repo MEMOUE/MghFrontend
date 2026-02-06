@@ -60,7 +60,7 @@ export class DashboadHotel {
       title: 'Personnel',
       description: 'Employés et plannings.',
       icon: 'pi-users',
-      route: '/personnel',
+      route: '/employes',
       gradient: 'from-teal-500 to-emerald-600'
     }
   ];

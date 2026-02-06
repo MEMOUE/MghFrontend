@@ -82,6 +82,33 @@ export const routes: Routes = [
       }
     ]
   },
+  { 
+    path: 'employes',
+     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./components/employes/listeemploye/listeemploye')
+          .then(m => m.Listemploye)
+      },
+      {
+        path: 'create',
+        loadComponent: () => import('./components/employes/createemploye/createemploye')
+          .then(m => m.Createemploye)
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () => import('./components/employes/createemploye/createemploye')
+          .then(m => m.Createemploye)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./components/employes/detailemploye/detailemploye')
+          .then(m => m.Detailemploye)
+      }
+    ]
+  },
   {
     path: 'unauthorized',
     loadComponent: () => import('./components/unauthorized/unauthorized.component')
