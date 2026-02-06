@@ -109,6 +109,33 @@ export const routes: Routes = [
       }
     ]
   },
+  { 
+    path: 'clients',
+     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./components/clients/listeclient/listeclient')
+          .then(m => m.Listeclient)
+      },
+      {
+        path: 'create',
+        loadComponent: () => import('./components/clients/createclient/createclient')
+          .then(m => m.Createclient)
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () => import('./components/clients/createclient/createclient')
+          .then(m => m.Createclient)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./components/clients/detailclient/detailclient')
+          .then(m => m.Detailclient)
+      }
+    ]
+  },
   {
     path: 'unauthorized',
     loadComponent: () => import('./components/unauthorized/unauthorized.component')
