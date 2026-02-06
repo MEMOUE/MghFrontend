@@ -49,19 +49,26 @@ export class DashboadHotel {
       route: '/finance',
       gradient: 'from-rose-500 to-red-600'
     },
-    {
-      title: 'Rapports',
-      description: 'Statistiques et performances.',
-      icon: 'pi-chart-line',
-      route: '/rapports',
-      gradient: 'from-cyan-500 to-sky-600'
-    },
+    // {
+    //   title: 'Rapports',
+    //   description: 'Statistiques et performances.',
+    //   icon: 'pi-chart-line',
+    //   route: '/rapports',
+    //   gradient: 'from-cyan-500 to-sky-600'
+    // },
     {
       title: 'Personnel',
       description: 'Employés et plannings.',
       icon: 'pi-users',
       route: '/employes',
       gradient: 'from-teal-500 to-emerald-600'
+    },
+    {
+      title: 'Clients',
+      description: 'Clients.',
+      icon: 'pi-user-edit',
+      route: '/Clients',
+      gradient: 'from-teal-500 to-sky-100'
     }
   ];
 
