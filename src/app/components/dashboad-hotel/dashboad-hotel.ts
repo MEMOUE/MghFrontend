@@ -18,7 +18,7 @@ export class DashboadHotel {
       title: 'Réservations',
       description: 'Réservations, check-in, check-out.',
       icon: 'pi-calendar',
-      route: '/reservations',
+      route: '/reservation',
       gradient: 'from-blue-500 to-indigo-600'
     },
     {
