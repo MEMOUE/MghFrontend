@@ -137,6 +137,32 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'restauration',
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./components/restaurations/listeresto/listeresto')
+          .then(m => m.Listeresto)
+      },
+      {
+        path: 'create',
+        loadComponent: () => import('./components/restaurations/createresto/createresto')
+          .then(m => m.Createresto)
+      },{
+        path: ':id/edit',
+        loadComponent: () => import('./components/restaurations/createresto/createresto')
+          .then(m => m.Createresto)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./components/restaurations/detailresto/detailresto')
+          .then(m => m.Detailresto)
+      }
+    ]
+  },
+  {
     path: 'unauthorized',
     loadComponent: () => import('./components/unauthorized/unauthorized.component')
       .then(m => m.UnauthorizedComponent)
