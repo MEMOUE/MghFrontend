@@ -67,7 +67,7 @@ export class DashboadHotel {
       title: 'Clients',
       description: 'Clients.',
       icon: 'pi-user-edit',
-      route: '/Clients',
+      route: '/clients',
       gradient: 'from-teal-500 to-sky-100'
     }
   ];
