@@ -189,6 +189,33 @@ export const routes: Routes = [
       }
     ]
   },
+  { 
+    path: 'finances',
+     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./components/finances/listefinance/listefinance')
+          .then(m => m.Listefinance)
+      },
+      // {
+      //   path: 'create',
+      //   loadComponent: () => import('./components/stocks/createstock/createstock')
+      //     .then(m => m.Createstock)
+      // },
+      // {
+      //   path: ':id/edit',
+      //   loadComponent: () => import('./components/finances')
+      //     .then(m => m.Createstock)
+      // },
+      {
+        path: ':id',
+        loadComponent: () => import('./components/finances/detailfinance/detailfinance')
+          .then(m => m.Detailfinance)
+      }
+    ]
+  },
   {
     path: 'unauthorized',
     loadComponent: () => import('./components/unauthorized/unauthorized.component')
