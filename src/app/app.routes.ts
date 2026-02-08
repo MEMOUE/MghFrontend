@@ -162,6 +162,33 @@ export const routes: Routes = [
       }
     ]
   },
+  { 
+    path: 'stocks',
+     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./components/stocks/listestock/listestock')
+          .then(m => m.Listestock)
+      },
+      {
+        path: 'create',
+        loadComponent: () => import('./components/stocks/createstock/createstock')
+          .then(m => m.Createstock)
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () => import('./components/stocks/createstock/createstock')
+          .then(m => m.Createstock)
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./components/stocks/detailstock/detailstock')
+          .then(m => m.Detailstock)
+      }
+    ]
+  },
   {
     path: 'unauthorized',
     loadComponent: () => import('./components/unauthorized/unauthorized.component')
