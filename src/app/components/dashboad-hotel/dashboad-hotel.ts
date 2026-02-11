@@ -46,7 +46,7 @@ export class DashboadHotel {
       title: 'Finance',
       description: 'Facturation et finances.',
       icon: 'pi-wallet',
-      route: '/finance',
+      route: '/finances',
       gradient: 'from-rose-500 to-red-600'
     },
     // {

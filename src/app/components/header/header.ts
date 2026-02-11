@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from "@angular/router";
+import { RouterLink, Router } from "@angular/router";
+import { AuthService } from '../../services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -9,12 +11,21 @@ import { RouterLink } from "@angular/router";
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
-export class Header {
+export class Header implements OnInit, OnDestroy {
   protected readonly isDarkMode = signal(false);
   protected readonly isScrolled = signal(false);
   showMobileMenu = false;
+  showProfileMenu = false;
+  
+  // État d'authentification
+  isAuthenticated = false;
+  currentUser: any = null;
+  private authSubscription?: Subscription;
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
     // Initialiser le thème
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -27,6 +38,20 @@ export class Header {
       window.addEventListener('scroll', () => {
         this.isScrolled.set(window.scrollY > 10);
       });
+    }
+  }
+
+  ngOnInit(): void {
+    // S'abonner aux changements d'authentification
+    this.authSubscription = this.authService.currentUser.subscribe(user => {
+      this.currentUser = user;
+      this.isAuthenticated = !!user;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
     }
   }
 
@@ -49,6 +74,7 @@ export class Header {
 
   toggleMobileMenu(): void {
     this.showMobileMenu = !this.showMobileMenu;
+    this.showProfileMenu = false; // Fermer le menu profil
 
     // Empêcher le scroll du body quand le menu est ouvert
     if (typeof document !== 'undefined') {
@@ -65,5 +91,47 @@ export class Header {
     if (typeof document !== 'undefined') {
       document.body.style.overflow = '';
     }
+  }
+
+  toggleProfileMenu(): void {
+    this.showProfileMenu = !this.showProfileMenu;
+  }
+
+  closeProfileMenu(): void {
+    this.showProfileMenu = false;
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.showProfileMenu = false;
+    this.showMobileMenu = false;
+    this.router.navigate(['/accueil']);
+  }
+
+  getUserInitials(): string {
+    if (!this.currentUser) return '';
+    
+    if (this.currentUser.firstName && this.currentUser.lastName) {
+      return `${this.currentUser.firstName[0]}${this.currentUser.lastName[0]}`.toUpperCase();
+    }
+    
+    if (this.currentUser.name) {
+      const parts = this.currentUser.name.split(' ');
+      return parts.length > 1 
+        ? `${parts[0][0]}${parts[1][0]}`.toUpperCase()
+        : parts[0].substring(0, 2).toUpperCase();
+    }
+    
+    return this.currentUser.email ? this.currentUser.email[0].toUpperCase() : 'U';
+  }
+
+  getUserDisplayName(): string {
+    if (!this.currentUser) return '';
+    
+    if (this.currentUser.firstName && this.currentUser.lastName) {
+      return `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    }
+    
+    return this.currentUser.name || this.currentUser.email || 'Utilisateur';
   }
 }

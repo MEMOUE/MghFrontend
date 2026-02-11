@@ -199,16 +199,16 @@ export const routes: Routes = [
         loadComponent: () => import('./components/finances/listefinance/listefinance')
           .then(m => m.Listefinance)
       },
-      // {
-      //   path: 'create',
-      //   loadComponent: () => import('./components/stocks/createstock/createstock')
-      //     .then(m => m.Createstock)
-      // },
-      // {
-      //   path: ':id/edit',
-      //   loadComponent: () => import('./components/finances')
-      //     .then(m => m.Createstock)
-      // },
+      {
+        path: 'create',
+        loadComponent: () => import('./components/finances/creatfinance/creatfinance')
+          .then(m => m.Creatfinance)
+      },
+       {
+        path: ':id/edit',
+        loadComponent: () => import('./components/finances/creatfinance/creatfinance')
+          .then(m => m.Creatfinance)
+      },
       {
         path: ':id',
         loadComponent: () => import('./components/finances/detailfinance/detailfinance')
