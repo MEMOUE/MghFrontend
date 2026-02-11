@@ -216,6 +216,28 @@ export const routes: Routes = [
       }
     ]
   },
+  { 
+    path: 'profile',
+     canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () => import('./components/profile/detailprofile/detailprofile')
+          .then(m => m.Detailprofile)
+      },
+       {
+        path: 'edit',
+        loadComponent: () => import('./components/profile/edite-profile/edite-profile')
+          .then(m => m.EditeProfile)
+      },
+      {
+        path: 'change-password',
+        loadComponent: () => import('./components/profile/change-password/change-password')
+          .then(m => m.ChangePassword)
+      }
+    ]
+  },
   {
     path: 'unauthorized',
     loadComponent: () => import('./components/unauthorized/unauthorized.component')
